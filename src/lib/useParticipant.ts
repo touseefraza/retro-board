@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
+import { defaultName } from "./names";
 
 const ID_KEY = "retro:participant-id";
 const NAME_KEY = "retro:participant-name";
@@ -24,7 +25,16 @@ function readSnapshot(): Participant {
     id = crypto.randomUUID();
     localStorage.setItem(ID_KEY, id);
   }
-  snapshot = { id, name: localStorage.getItem(NAME_KEY) ?? "" };
+
+  // Everyone gets a readable name on arrival, so cards and cursors are never
+  // attributed to "Anonymous". Persisted so it survives a rename back to blank.
+  let name = localStorage.getItem(NAME_KEY);
+  if (!name) {
+    name = defaultName(id);
+    localStorage.setItem(NAME_KEY, name);
+  }
+
+  snapshot = { id, name };
   return snapshot;
 }
 
@@ -40,9 +50,12 @@ export function useParticipant(): {
   const participant = useSyncExternalStore(subscribe, readSnapshot, () => null);
 
   const setName = useCallback((name: string) => {
-    const trimmed = name.slice(0, 60);
-    localStorage.setItem(NAME_KEY, trimmed);
-    snapshot = { ...readSnapshot(), name: trimmed };
+    const current = readSnapshot();
+    // Clearing the field hands the name back to the generated one rather than
+    // leaving a nameless participant on the board.
+    const next = name.trim() ? name.slice(0, 60) : defaultName(current.id);
+    localStorage.setItem(NAME_KEY, next);
+    snapshot = { ...current, name: next };
     for (const listener of listeners) listener();
   }, []);
 

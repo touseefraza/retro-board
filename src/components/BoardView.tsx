@@ -1,13 +1,15 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { ActionsPanel } from "./ActionsPanel";
 import { AiPanel, type AiPayload } from "./AiPanel";
 import { BoardColumn } from "./BoardColumn";
 import { BoardHeader } from "./BoardHeader";
+import { Cursors } from "./Presence";
 import { Shimmer } from "./ui";
 import { useBoard } from "@/lib/useBoard";
 import { participantHeaders, useParticipant } from "@/lib/useParticipant";
+import { usePresence } from "@/lib/usePresence";
 import type { BoardState, Phase } from "@/lib/types";
 
 export function BoardView({
@@ -19,6 +21,11 @@ export function BoardView({
 }) {
   const { participant, setName } = useParticipant();
   const { state, error, refresh, mutate } = useBoard(boardId, participant);
+
+  // Cursors are positioned against the columns themselves, so the overlay
+  // scrolls with them instead of floating over a fixed viewport.
+  const surfaceRef = useRef<HTMLDivElement>(null);
+  const peers = usePresence(boardId, participant, surfaceRef);
 
   const runAi = useCallback(
     async (action: string, options?: { apply?: boolean }) => {
@@ -67,6 +74,8 @@ export function BoardView({
         board={state.board}
         votesUsed={state.votesUsed}
         participantName={participant.name}
+        participant={participant}
+        peers={peers}
         onRename={(title) => patchBoard({ title })}
         onPhase={(phase: Phase) => patchBoard({ phase })}
         onMask={(masked) => patchBoard({ masked })}
@@ -75,7 +84,8 @@ export function BoardView({
 
       <main className="mx-auto flex w-full max-w-[110rem] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:items-start">
         <div className="min-w-0 flex-1 overflow-x-auto pb-4">
-          <div className="flex gap-4">
+          <div ref={surfaceRef} className="relative flex gap-4">
+            <Cursors peers={peers} />
             {state.columns.map((column) => (
               <BoardColumn
                 key={column.id}

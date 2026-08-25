@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Button, cx } from "./ui";
-import { PHASES, type Board, type Phase } from "@/lib/types";
+import { PresenceBar } from "./Presence";
+import { PHASES, type Board, type Peer, type Phase } from "@/lib/types";
+import type { Participant } from "@/lib/useParticipant";
 
 const PHASE_COPY: Record<Phase, string> = {
   collect: "Everyone writes",
@@ -16,6 +18,8 @@ export function BoardHeader({
   board,
   votesUsed,
   participantName,
+  participant,
+  peers,
   onRename,
   onPhase,
   onMask,
@@ -24,6 +28,8 @@ export function BoardHeader({
   board: Board;
   votesUsed: number;
   participantName: string;
+  participant: Participant;
+  peers: Peer[];
   onRename: (title: string) => void;
   onPhase: (phase: Phase) => void;
   onMask: (masked: boolean) => void;
@@ -31,6 +37,9 @@ export function BoardHeader({
 }) {
   const [copied, setCopied] = useState(false);
   const [editingTitle, setEditingTitle] = useState(false);
+  // Held locally while typing so the field can be emptied; committing an empty
+  // name is what hands it back to the generated one.
+  const [nameDraft, setNameDraft] = useState<string | null>(null);
 
   const share = async () => {
     await navigator.clipboard.writeText(window.location.href);
@@ -104,6 +113,8 @@ export function BoardHeader({
         </div>
 
         <div className="ml-auto flex items-center gap-2">
+          <PresenceBar self={participant} peers={peers} />
+
           {budget > 0 && (
             <span
               title="Votes you have left"
@@ -123,10 +134,22 @@ export function BoardHeader({
           </Button>
 
           <input
-            value={participantName}
+            value={nameDraft ?? participantName}
             placeholder="Your name"
-            onChange={(event) => onName(event.target.value)}
-            className="w-24 rounded-lg border border-white/7 bg-white/3 px-2.5 py-1.5 text-[12px] text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50 sm:w-28"
+            title="The name on your cards and cursor"
+            onChange={(event) => setNameDraft(event.target.value)}
+            onBlur={() => {
+              onName(nameDraft ?? participantName);
+              setNameDraft(null);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") event.currentTarget.blur();
+              if (event.key === "Escape") {
+                setNameDraft(null);
+                event.currentTarget.blur();
+              }
+            }}
+            className="w-28 rounded-lg border border-white/7 bg-white/3 px-2.5 py-1.5 text-[12px] text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50 sm:w-36"
           />
 
           <Button size="sm" variant="primary" onClick={share}>

@@ -58,6 +58,19 @@ export type Board = {
   createdAt: string;
 };
 
+/**
+ * Someone else looking at the board right now. Cursor coordinates are fractions
+ * of the board surface (0..1), so they map across differently sized viewports.
+ */
+export type Peer = {
+  id: string;
+  name: string;
+  x: number | null;
+  y: number | null;
+  /** Milliseconds since this peer last reported in. */
+  idleMs: number;
+};
+
 /** The single payload the board UI renders from. */
 export type BoardState = {
   board: Board;

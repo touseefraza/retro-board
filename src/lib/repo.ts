@@ -7,6 +7,7 @@ import {
   type BoardState,
   type Card,
   type Column,
+  type Peer,
   type Phase,
   type Theme,
 } from "./types";
@@ -446,4 +447,96 @@ export async function deleteActionItem(boardId: string, itemId: string): Promise
 
 export async function boardExists(boardId: string): Promise<boolean> {
   return (await getBoardVersion(boardId)) !== null;
+}
+
+/** A peer is considered present if they've reported in this recently. */
+const PRESENCE_TTL = "15 seconds";
+
+/** Postgres foreign-key violation — the board id doesn't exist. */
+const FK_VIOLATION = "23503";
+
+/**
+ * Records where this participant is pointing and returns everyone else who is
+ * currently on the board, in one round trip.
+ *
+ * Deliberately does not `bump()` the board version: cursors move constantly and
+ * must not force every client to re-fetch the whole board.
+ *
+ * Returns null when the board doesn't exist.
+ */
+export async function syncPresence(input: {
+  boardId: string;
+  participantId: string;
+  name: string;
+  x: number | null;
+  y: number | null;
+}): Promise<Peer[] | null> {
+  const sql = await db();
+  const { boardId, participantId, name, x, y } = input;
+
+  try {
+    await sql`
+      insert into presence (board_id, participant_id, name, cursor_x, cursor_y, seen_at)
+      values (${boardId}, ${participantId}, ${name}, ${x}, ${y}, now())
+      on conflict (board_id, participant_id) do update set
+        name     = excluded.name,
+        cursor_x = excluded.cursor_x,
+        cursor_y = excluded.cursor_y,
+        seen_at  = now()
+    `;
+  } catch (error) {
+    if ((error as { code?: string }).code === FK_VIOLATION) return null;
+    throw error;
+  }
+
+  return await readPeers(sql, boardId, participantId);
+}
+
+/** Drops this participant's marker — sent on unload so cursors vanish at once. */
+export async function leavePresence(
+  boardId: string,
+  participantId: string,
+): Promise<void> {
+  const sql = await db();
+  await sql`
+    delete from presence where board_id = ${boardId} and participant_id = ${participantId}
+  `;
+}
+
+async function readPeers(
+  sql: Awaited<ReturnType<typeof db>>,
+  boardId: string,
+  participantId: string,
+): Promise<Peer[]> {
+  const rows = await sql`
+    select
+      participant_id,
+      name,
+      cursor_x,
+      cursor_y,
+      extract(epoch from (now() - seen_at)) * 1000 as idle_ms
+    from presence
+    where board_id = ${boardId}
+      and participant_id <> ${participantId}
+      and seen_at > now() - ${PRESENCE_TTL}::interval
+    order by seen_at desc
+    limit 40
+  `;
+
+  return rows.map((row) => ({
+    id: row.participant_id as string,
+    name: row.name as string,
+    x: row.cursor_x === null ? null : Number(row.cursor_x),
+    y: row.cursor_y === null ? null : Number(row.cursor_y),
+    idleMs: Math.max(0, Math.round(Number(row.idle_ms))),
+  }));
+}
+
+/**
+ * Clears markers left behind by tabs that closed without sending a beacon.
+ * Called opportunistically so it costs nothing on the common path.
+ */
+export async function sweepPresence(): Promise<void> {
+  const sql = await db();
+  await sql`delete from presence where seen_at < now() - interval '5 minutes'`;
 }

@@ -95,6 +95,17 @@ create table if not exists action_items (
   created_at timestamptz not null default now()
 );
 create index if not exists action_items_board_idx on action_items(board_id);
+
+create table if not exists presence (
+  board_id       text        not null references boards(id) on delete cascade,
+  participant_id text        not null,
+  name           text        not null,
+  cursor_x       real,
+  cursor_y       real,
+  seen_at        timestamptz not null default now(),
+  primary key (board_id, participant_id)
+);
+create index if not exists presence_board_seen_idx on presence(board_id, seen_at);
 `;
 
 /**
