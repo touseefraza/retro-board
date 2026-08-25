@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens. Dark-first: a retro is usually run on a shared screen, and the
+   coloured sticky notes read best against a near-black ground.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-ink-950: #08080b;
+  --color-ink-900: #0c0c11;
+  --color-ink-800: #14141c;
+  --color-ink-700: #1c1c27;
+  --color-ink-600: #262633;
+
+  --color-mist-100: #f4f4f7;
+  --color-mist-300: #c6c6d4;
+  --color-mist-500: #8b8ba3;
+  --color-mist-700: #56566b;
+
+  --color-accent: #7f6cff;
+  --color-accent-soft: #a99dff;
+
+  /* One hue per column tone. Used for the card edge, glow and vote pill. */
+  --color-tone-positive: #34d399;
+  --color-tone-negative: #fb7185;
+  --color-tone-idea: #fbbf24;
+  --color-tone-neutral: #60a5fa;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --radius-card: 14px;
+
+  --animate-rise: rise 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-shimmer: shimmer 1.6s linear infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-ink-950);
+  color: var(--color-mist-100);
+  font-family: var(--font-sans);
+  /* Two soft light sources so the flat black doesn't read as dead space. */
+  background-image:
+    radial-gradient(70rem 40rem at 12% -10%, rgb(127 108 255 / 0.16), transparent 60%),
+    radial-gradient(60rem 34rem at 92% 0%, rgb(52 211 153 / 0.09), transparent 55%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgb(127 108 255 / 0.35);
+}
+
+/* Slim scrollbars — the board is a horizontally scrolling surface. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-600) transparent;
+}
+
+@utility surface {
+  background: rgb(255 255 255 / 0.035);
+  border: 1px solid rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(12px);
+}
+
+@utility focus-ring {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+:where(button, a, input, textarea, select):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
