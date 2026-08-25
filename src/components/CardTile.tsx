@@ -79,7 +79,7 @@ export function CardTile({
               setEditing(false);
             }
           }}
-          className="w-full resize-none rounded-md bg-scrim p-2 text-sm leading-relaxed text-mist-100 outline-none"
+          className="w-full resize-none rounded-md bg-fill-2 p-2 text-sm leading-relaxed text-mist-100 outline-none"
         />
       ) : (
         <p className="text-sm leading-relaxed whitespace-pre-wrap text-mist-100">

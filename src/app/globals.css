@@ -26,7 +26,7 @@
   --color-mist-100: #f4f4f7;
   --color-mist-300: #c6c6d4;
   --color-mist-500: #a2a2b8;
-  --color-mist-700: #767690;
+  --color-mist-700: #7e7e99;
 
   --color-accent: #7f6cff;
   --color-accent-soft: #a99dff;
@@ -43,7 +43,11 @@
   --color-fill-3: rgb(255 255 255 / 0.11);
   --color-line: rgb(255 255 255 / 0.09);
   --color-line-strong: rgb(255 255 255 / 0.18);
-  --color-scrim: rgb(0 0 0 / 0.3);
+  /* Opaque, for anything floating above the page: a translucent fill reads as
+     a hole when there's a dimmed backdrop behind it instead of the page. */
+  --color-panel: #13131c;
+  /* Modal backdrop only — deep enough that the page reads as dismissed. */
+  --color-scrim: rgb(0 0 0 / 0.6);
 
   --color-shimmer-base: rgb(255 255 255 / 0.05);
   --color-shimmer-peak: rgb(255 255 255 / 0.14);
@@ -88,7 +92,8 @@ html[data-theme="light"] {
   --color-fill-3: rgb(14 16 32 / 0.1);
   --color-line: rgb(14 16 32 / 0.12);
   --color-line-strong: rgb(14 16 32 / 0.22);
-  --color-scrim: rgb(0 0 0 / 0.25);
+  --color-panel: #ffffff;
+  --color-scrim: rgb(14 16 32 / 0.4);
 
   --color-shimmer-base: rgb(14 16 32 / 0.05);
   --color-shimmer-peak: rgb(14 16 32 / 0.13);

@@ -82,7 +82,7 @@ export function ExportDialog({
         role="dialog"
         aria-modal="true"
         aria-label="Export board"
-        className="surface my-auto w-full max-w-2xl rounded-2xl p-5 sm:p-6"
+        className="my-auto w-full max-w-2xl rounded-2xl border border-line bg-panel p-5 shadow-2xl sm:p-6"
       >
         <div className="flex items-start gap-4">
           <div className="min-w-0 flex-1">
