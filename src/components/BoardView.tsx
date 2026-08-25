@@ -158,7 +158,7 @@ export function BoardView({
           </div>
         </div>
 
-        <aside className="flex w-full shrink-0 flex-col gap-4 lg:sticky lg:top-20 lg:w-[20rem]">
+        <aside className="flex w-full shrink-0 flex-col gap-4 lg:sticky lg:top-[4.5rem] lg:w-[21rem] xl:w-[23rem]">
           {/* Hidden entirely without a key, rather than shown as a dead panel. */}
           {aiEnabled && (
             <AiPanel
