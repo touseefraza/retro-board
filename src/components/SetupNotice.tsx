@@ -30,7 +30,7 @@ export function SetupNotice({
   ];
 
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-6 py-20">
+    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-4 py-16 sm:px-6 sm:py-20">
       <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent-soft">
         One step left
       </p>

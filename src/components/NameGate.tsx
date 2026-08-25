@@ -30,7 +30,7 @@ export function NameGate({
   const colour = `hsl(${hue(participant.id)} 85% 62%)`;
 
   return (
-    <div className="flex flex-1 items-center justify-center px-6 py-16">
+    <div className="flex flex-1 items-center justify-center px-4 py-12 sm:px-6 sm:py-16">
       <div className="surface w-full max-w-sm rounded-3xl p-6">
         <div className="flex items-center gap-3">
           <span

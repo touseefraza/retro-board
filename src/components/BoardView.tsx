@@ -69,7 +69,7 @@ export function BoardView({
 
   if (!state || !participant) {
     return (
-      <div className="mx-auto w-full max-w-md px-6 py-24">
+      <div className="mx-auto w-full max-w-md px-4 py-20 sm:px-6 sm:py-24">
         <Shimmer lines={4} />
       </div>
     );

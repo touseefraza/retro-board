@@ -56,10 +56,10 @@ export default function Home() {
   const features = hasAi ? AI_FEATURES : BOARD_FEATURES;
 
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-16 sm:py-24">
+    <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-8 pb-20 sm:px-6 sm:pt-12 sm:pb-24">
       <div className="flex items-center gap-2.5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent/15 ring-1 ring-accent/30">
-          <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 text-accent-soft" fill="currentColor" aria-hidden="true">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/15 ring-1 ring-accent/30">
+          <svg viewBox="0 0 16 16" className="h-4 w-4 text-accent-soft" fill="currentColor" aria-hidden="true">
             <rect x="2" y="2.5" width="4.5" height="7" rx="1.2" />
             <rect x="8" y="2.5" width="6" height="4.5" rx="1.2" opacity=".55" />
             <rect x="2" y="11" width="4.5" height="2.5" rx="1" opacity=".55" />
@@ -81,17 +81,17 @@ export default function Home() {
         </span>
       </h1>
 
-      <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-mist-500">
+      <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-mist-500">
         {hasAi
           ? "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards. When the wall of stickies gets messy, Claude groups them, finds the actions, and writes the read-out."
           : "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards — everyone sees the same wall, and each other's cursors, as it fills up."}
       </p>
 
-      <div className="mt-10">
+      <div className="mt-8">
         <CreateBoard />
       </div>
 
-      <section className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-line bg-fill-2 sm:grid-cols-2">
+      <section className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-fill-2 sm:grid-cols-2">
         {features.map((feature) => (
           <div key={feature.title} className="bg-ink-950/80 p-5">
             <h2 className="text-[13px] font-semibold text-mist-100">{feature.title}</h2>
@@ -103,7 +103,7 @@ export default function Home() {
       </section>
 
       {hasAi && (
-        <section className="mt-6 surface rounded-2xl p-5">
+        <section className="mt-4 surface rounded-2xl p-5">
           <h2 className="text-[13px] font-semibold text-mist-100">
             Agents are first-class here
           </h2>
