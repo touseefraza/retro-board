@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import { Button } from "./ui";
-import { defaultName, hue, initials } from "@/lib/names";
+import { hue, initials, VISITOR_NAME } from "@/lib/names";
 import type { Participant } from "@/lib/useParticipant";
 
 /**
  * Asks who you are before the board is revealed.
  *
- * Nothing is attributed to "Anonymous" this way: by the time cards and cursors
- * exist, they already carry a name. The field starts on a generated suggestion
- * so joining stays one keystroke, but an empty name can't be submitted.
+ * Everyone is asked, but nobody is trapped: leaving the field blank joins as
+ * "Visitor", and the cursor colour still tells two visitors apart. The point is
+ * that the question is put, not that an answer is compelled.
  */
 export function NameGate({
   participant,
@@ -21,12 +21,10 @@ export function NameGate({
   boardTitle?: string;
   onSubmit: (name: string) => void;
 }) {
-  const [name, setName] = useState(() => defaultName(participant.id));
-  const ready = name.trim().length > 0;
+  const [name, setName] = useState("");
+  const named = name.trim().length > 0;
 
-  const submit = () => {
-    if (ready) onSubmit(name);
-  };
+  const submit = () => onSubmit(name.trim() || VISITOR_NAME);
 
   const colour = `hsl(${hue(participant.id)} 85% 62%)`;
 
@@ -38,7 +36,7 @@ export function NameGate({
             style={{ backgroundColor: colour }}
             className="flex h-9 w-9 items-center justify-center rounded-full text-[11px] font-bold text-ink-950"
           >
-            {initials(name || "?")}
+            {initials(named ? name : VISITOR_NAME)}
           </span>
           <div className="min-w-0">
             <h1 className="text-base font-semibold tracking-tight text-mist-100">
@@ -62,25 +60,19 @@ export function NameGate({
           value={name}
           maxLength={60}
           placeholder="Enter your name"
-          onFocus={(event) => event.currentTarget.select()}
           onChange={(event) => setName(event.target.value)}
           onKeyDown={(event) => event.key === "Enter" && submit()}
           className="mt-2 h-11 w-full rounded-xl border border-white/8 bg-white/3 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
         />
 
-        <Button
-          variant="primary"
-          onClick={submit}
-          disabled={!ready}
-          className="mt-3 h-11 w-full"
-        >
-          Continue →
+        <Button variant="primary" onClick={submit} className="mt-3 h-11 w-full">
+          {named ? "Continue →" : `Continue as ${VISITOR_NAME} →`}
         </Button>
 
         <p className="mt-3 text-[11px] leading-relaxed text-mist-700">
-          {ready
+          {named
             ? "This is the name on your cards and cursor. You can change it later."
-            : "Enter a name to continue."}
+            : `Leave it blank to join as ${VISITOR_NAME}. You can add a name later.`}
         </p>
       </div>
     </div>

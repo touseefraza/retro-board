@@ -4,13 +4,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button, cx, TONE } from "./ui";
 import { TEMPLATES } from "@/lib/types";
+import { VISITOR_NAME } from "@/lib/names";
+import { useParticipant } from "@/lib/useParticipant";
 
 const TEMPLATE_IDS = Object.keys(TEMPLATES);
 
 export function CreateBoard() {
   const router = useRouter();
+  const { setName } = useParticipant();
   const [template, setTemplate] = useState(TEMPLATE_IDS[0]);
   const [title, setTitle] = useState("");
+  const [name, setNameDraft] = useState("");
   const [creating, setCreating] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
 
@@ -32,6 +36,9 @@ export function CreateBoard() {
         setFailure(payload?.fix ?? payload?.error ?? "Could not create the board");
         return;
       }
+      // The creator is asked here, so the board doesn't greet them with the
+      // same question the moment they land on it.
+      setName(name.trim() || VISITOR_NAME);
       router.push(`/b/${payload.boardId}`);
     } finally {
       setCreating(false);
@@ -76,7 +83,7 @@ export function CreateBoard() {
         })}
       </div>
 
-      <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
+      <div className="mt-4 flex flex-col gap-2.5">
         <input
           value={title}
           placeholder="Enter board name"
@@ -84,25 +91,39 @@ export function CreateBoard() {
           onKeyDown={(event) => event.key === "Enter" && create()}
           aria-label="Board name"
           maxLength={80}
-          className="h-11 flex-1 rounded-xl border border-white/8 bg-white/3 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
+          className="h-11 w-full rounded-xl border border-white/8 bg-white/3 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
         />
-        <Button
-          variant="primary"
-          onClick={create}
-          disabled={creating || !named}
-          className="h-11 px-6"
-        >
-          {creating ? "Creating…" : "Start retro →"}
-        </Button>
+
+        <div className="flex flex-col gap-2.5 sm:flex-row">
+          <input
+            value={name}
+            placeholder="Your name (optional)"
+            onChange={(event) => setNameDraft(event.target.value)}
+            onKeyDown={(event) => event.key === "Enter" && create()}
+            aria-label="Your name"
+            maxLength={60}
+            className="h-11 flex-1 rounded-xl border border-white/8 bg-white/3 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
+          />
+          <Button
+            variant="primary"
+            onClick={create}
+            disabled={creating || !named}
+            className="h-11 px-6"
+          >
+            {creating ? "Creating…" : "Start retro →"}
+          </Button>
+        </div>
       </div>
 
       {failure && (
         <p className="mt-3 text-[12px] leading-relaxed text-tone-negative">{failure}</p>
       )}
       <p className="mt-3 text-[11px] text-mist-700">
-        {named
-          ? "No sign-up. The board lives at a private link you can share."
-          : "Give the board a name to start."}
+        {!named
+          ? "Give the board a name to start."
+          : name.trim()
+            ? "No sign-up. The board lives at a private link you can share."
+            : `No sign-up. You'll join as ${VISITOR_NAME} — add a name any time.`}
       </p>
     </div>
   );
