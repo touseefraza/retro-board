@@ -5,6 +5,7 @@ import { ActionsPanel } from "./ActionsPanel";
 import { AiPanel, type AiPayload } from "./AiPanel";
 import { BoardColumn } from "./BoardColumn";
 import { BoardHeader } from "./BoardHeader";
+import { NameGate } from "./NameGate";
 import { Cursors } from "./Presence";
 import { Shimmer } from "./ui";
 import { useBoard } from "@/lib/useBoard";
@@ -19,13 +20,13 @@ export function BoardView({
   boardId: string;
   aiEnabled: boolean;
 }) {
-  const { participant, setName } = useParticipant();
+  const { participant, hasName, setName } = useParticipant();
   const { state, error, refresh, mutate } = useBoard(boardId, participant);
 
   // Cursors are positioned against the columns themselves, so the overlay
   // scrolls with them instead of floating over a fixed viewport.
   const surfaceRef = useRef<HTMLDivElement>(null);
-  const peers = usePresence(boardId, participant, surfaceRef);
+  const peers = usePresence(boardId, hasName ? participant : null, surfaceRef);
 
   const runAi = useCallback(
     async (action: string, options?: { apply?: boolean }) => {
@@ -45,6 +46,18 @@ export function BoardView({
     },
     [boardId, participant, refresh],
   );
+
+  // Ask who's joining before the board is revealed, so nothing on it is ever
+  // attributed to a nameless participant.
+  if (participant && !hasName) {
+    return (
+      <NameGate
+        participant={participant}
+        boardTitle={state?.board.title}
+        onSubmit={setName}
+      />
+    );
+  }
 
   if (error) {
     return (

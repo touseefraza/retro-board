@@ -14,14 +14,18 @@ export function CreateBoard() {
   const [creating, setCreating] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
 
+  const named = title.trim().length > 0;
+
   const create = async () => {
+    // The board is named by hand — no falling back to the template's name.
+    if (!named) return;
     setCreating(true);
     setFailure(null);
     try {
       const response = await fetch("/api/boards", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ title, template }),
+        body: JSON.stringify({ title: title.trim(), template }),
       });
       const payload = await response.json().catch(() => null);
       if (!response.ok) {
@@ -75,16 +79,17 @@ export function CreateBoard() {
       <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
         <input
           value={title}
-          placeholder={TEMPLATES[template].name}
+          placeholder="Enter board name"
           onChange={(event) => setTitle(event.target.value)}
           onKeyDown={(event) => event.key === "Enter" && create()}
-          aria-label="Board title"
+          aria-label="Board name"
+          maxLength={80}
           className="h-11 flex-1 rounded-xl border border-white/8 bg-white/3 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
         />
         <Button
           variant="primary"
           onClick={create}
-          disabled={creating}
+          disabled={creating || !named}
           className="h-11 px-6"
         >
           {creating ? "Creating…" : "Start retro →"}
@@ -95,7 +100,9 @@ export function CreateBoard() {
         <p className="mt-3 text-[12px] leading-relaxed text-tone-negative">{failure}</p>
       )}
       <p className="mt-3 text-[11px] text-mist-700">
-        No sign-up. The board lives at a private link you can share.
+        {named
+          ? "No sign-up. The board lives at a private link you can share."
+          : "Give the board a name to start."}
       </p>
     </div>
   );

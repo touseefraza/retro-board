@@ -37,8 +37,8 @@ export function BoardHeader({
 }) {
   const [copied, setCopied] = useState(false);
   const [editingTitle, setEditingTitle] = useState(false);
-  // Held locally while typing so the field can be emptied; committing an empty
-  // name is what hands it back to the generated one.
+  // Held locally while typing so the field can be emptied mid-edit; a name is
+  // required, so committing an empty one keeps the previous name.
   const [nameDraft, setNameDraft] = useState<string | null>(null);
 
   const share = async () => {
