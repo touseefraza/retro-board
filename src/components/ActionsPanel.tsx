@@ -67,7 +67,7 @@ export function ActionsPanel({
 
             <span
               className={cx(
-                "flex-1 text-[13px] leading-relaxed",
+                "min-w-0 flex-1 break-words text-[13px] leading-relaxed",
                 item.done ? "text-mist-700 line-through" : "text-mist-300",
               )}
             >
@@ -83,7 +83,7 @@ export function ActionsPanel({
               type="button"
               onClick={() => onDelete(item.id)}
               aria-label="Delete action item"
-              className="rounded p-0.5 text-mist-700 opacity-0 transition-opacity hover:text-tone-negative focus-visible:opacity-100 group-hover:opacity-100"
+              className="mt-0.5 shrink-0 rounded p-0.5 text-mist-700 opacity-0 transition-opacity hover:text-tone-negative focus-visible:opacity-100 group-hover:opacity-100"
             >
               <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden="true">
                 <path d="M3 3l6 6M9 3l-6 6" />
