@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ActionsPanel } from "./ActionsPanel";
 import { AiPanel, type AiPayload } from "./AiPanel";
 import { BoardColumn } from "./BoardColumn";
 import { BoardHeader } from "./BoardHeader";
+import { ExportDialog } from "./ExportDialog";
 import { NameGate } from "./NameGate";
 import { Cursors } from "./Presence";
 import { Shimmer } from "./ui";
@@ -21,6 +22,7 @@ export function BoardView({
   aiEnabled: boolean;
 }) {
   const { participant, hasName, setName } = useParticipant();
+  const [exporting, setExporting] = useState(false);
   const { state, error, refresh, mutate } = useBoard(boardId, participant);
 
   // Cursors are positioned against the columns themselves, so the overlay
@@ -93,6 +95,7 @@ export function BoardView({
         onPhase={(phase: Phase) => patchBoard({ phase })}
         onMask={(masked) => patchBoard({ masked })}
         onName={setName}
+        onExport={() => setExporting(true)}
       />
 
       <main className="mx-auto flex w-full max-w-[110rem] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:flex-row lg:items-start">
@@ -203,6 +206,10 @@ export function BoardView({
           )}
         </aside>
       </main>
+
+      {exporting && (
+        <ExportDialog state={state} onClose={() => setExporting(false)} />
+      )}
     </>
   );
 }

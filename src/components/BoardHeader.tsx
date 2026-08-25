@@ -25,6 +25,7 @@ export function BoardHeader({
   onPhase,
   onMask,
   onName,
+  onExport,
 }: {
   board: Board;
   votesUsed: number;
@@ -35,6 +36,7 @@ export function BoardHeader({
   onPhase: (phase: Phase) => void;
   onMask: (masked: boolean) => void;
   onName: (name: string) => void;
+  onExport: () => void;
 }) {
   const [copied, setCopied] = useState(false);
   const [editingTitle, setEditingTitle] = useState(false);
@@ -152,6 +154,10 @@ export function BoardHeader({
             }}
             className="w-28 rounded-lg border border-line bg-fill-1 px-2.5 py-1.5 text-[12px] text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50 sm:w-36"
           />
+
+          <Button size="sm" variant="ghost" onClick={onExport} title="Export this board">
+            Export
+          </Button>
 
           <ThemeToggle />
 
