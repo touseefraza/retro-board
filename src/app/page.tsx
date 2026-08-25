@@ -3,7 +3,8 @@ import { SetupNotice } from "@/components/SetupNotice";
 import { isAiConfigured } from "@/lib/ai";
 import { isDatabaseConfigured } from "@/lib/db";
 
-const FEATURES = [
+/** Shown when a Claude key is configured — every one of these is an AI pass. */
+const AI_FEATURES = [
   {
     title: "Find themes",
     body: "Claude reads every card and clusters them into named themes, so the grouping phase takes seconds instead of ten minutes of dragging.",
@@ -22,11 +23,36 @@ const FEATURES = [
   },
 ];
 
+/** What the board is without any of that — the honest pitch when AI is off. */
+const BOARD_FEATURES = [
+  {
+    title: "Pick a format",
+    body: "Start / Stop / Continue, Mad / Sad / Glad, the four Ls, or Sailboat. The columns are set up before you have finished reading this.",
+  },
+  {
+    title: "Everyone at once",
+    body: "Live cursors and cards that appear as they are written, so a remote retro feels like a room standing at the same wall.",
+  },
+  {
+    title: "Vote, then talk",
+    body: "A vote budget per person puts the discussion on what the team actually cares about instead of whoever spoke first.",
+  },
+  {
+    title: "Leave with actions",
+    body: "Action items live on the board with an owner and a done state, so the retro ends with a list rather than a feeling.",
+  },
+];
+
 export default function Home() {
   const hasDatabase = isDatabaseConfigured();
   if (!hasDatabase) {
     return <SetupNotice hasDatabase={false} hasAi={isAiConfigured()} />;
   }
+
+  // Without a key there is nothing to promise, so the page promises nothing:
+  // the Claude copy, the AI feature grid, and the MCP section all drop out.
+  const hasAi = isAiConfigured();
+  const features = hasAi ? AI_FEATURES : BOARD_FEATURES;
 
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-16 sm:py-24">
@@ -48,14 +74,14 @@ export default function Home() {
         Run the retro.
         <br />
         <span className="bg-gradient-to-r from-accent-soft via-mist-100 to-tone-neutral bg-clip-text text-transparent">
-          Let Claude do the sorting.
+          {hasAi ? "Let Claude do the sorting." : "Everyone on the same board."}
         </span>
       </h1>
 
       <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-mist-500">
-        A retrospective board that is ready the moment you open it. Pick a format,
-        share the link, write cards. When the wall of stickies gets messy, Claude
-        groups them, finds the actions, and writes the read-out.
+        {hasAi
+          ? "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards. When the wall of stickies gets messy, Claude groups them, finds the actions, and writes the read-out."
+          : "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards — everyone sees the same wall, and each other's cursors, as it fills up."}
       </p>
 
       <div className="mt-10">
@@ -63,7 +89,7 @@ export default function Home() {
       </div>
 
       <section className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-white/7 bg-white/6 sm:grid-cols-2">
-        {FEATURES.map((feature) => (
+        {features.map((feature) => (
           <div key={feature.title} className="bg-ink-950/80 p-5">
             <h2 className="text-[13px] font-semibold text-mist-100">{feature.title}</h2>
             <p className="mt-1.5 text-[13px] leading-relaxed text-mist-700">
@@ -73,24 +99,26 @@ export default function Home() {
         ))}
       </section>
 
-      <section className="mt-6 surface rounded-2xl p-5">
-        <h2 className="text-[13px] font-semibold text-mist-100">
-          Agents are first-class here
-        </h2>
-        <p className="mt-1.5 max-w-2xl text-[13px] leading-relaxed text-mist-700">
-          Every board is also an API. Point any MCP client at{" "}
-          <code className="font-mono text-mist-300">/api/mcp</code> and your agent can
-          create boards, post cards, vote, and run the same Claude passes the UI uses.
-          The full tool manifest and REST surface are described at{" "}
-          <a
-            href="/api/agent"
-            className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
-          >
-            /api/agent
-          </a>
-          .
-        </p>
-      </section>
+      {hasAi && (
+        <section className="mt-6 surface rounded-2xl p-5">
+          <h2 className="text-[13px] font-semibold text-mist-100">
+            Agents are first-class here
+          </h2>
+          <p className="mt-1.5 max-w-2xl text-[13px] leading-relaxed text-mist-700">
+            Every board is also an API. Point any MCP client at{" "}
+            <code className="font-mono text-mist-300">/api/mcp</code> and your agent can
+            create boards, post cards, vote, and run the same Claude passes the UI uses.
+            The full tool manifest and REST surface are described at{" "}
+            <a
+              href="/api/agent"
+              className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
+            >
+              /api/agent
+            </a>
+            .
+          </p>
+        </section>
+      )}
     </main>
   );
 }

@@ -159,14 +159,17 @@ export function BoardView({
         </div>
 
         <aside className="flex w-full shrink-0 flex-col gap-4 lg:sticky lg:top-20 lg:w-[20rem]">
-          <AiPanel
-            state={state}
-            aiEnabled={aiEnabled}
-            run={runAi}
-            onAcceptAction={(text) =>
-              mutate("/actions", { method: "POST", body: JSON.stringify({ text }) })
-            }
-          />
+          {/* Hidden entirely without a key, rather than shown as a dead panel. */}
+          {aiEnabled && (
+            <AiPanel
+              state={state}
+              aiEnabled={aiEnabled}
+              run={runAi}
+              onAcceptAction={(text) =>
+                mutate("/actions", { method: "POST", body: JSON.stringify({ text }) })
+              }
+            />
+          )}
 
           <ActionsPanel
             items={state.actionItems}
