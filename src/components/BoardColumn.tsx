@@ -54,7 +54,7 @@ export function BoardColumn({
         <span className="ml-auto text-xs tabular-nums text-mist-700">{cards.length}</span>
       </header>
 
-      <div className="surface rounded-xl p-1.5 transition-colors focus-within:border-white/18">
+      <div className="surface rounded-xl p-1.5 transition-colors focus-within:border-line-strong">
         <textarea
           value={draft}
           rows={2}
@@ -99,7 +99,7 @@ export function BoardColumn({
         ))}
 
         {!cards.length && (
-          <li className="rounded-card border border-dashed border-white/8 px-3.5 py-6 text-center text-xs text-mist-700">
+          <li className="rounded-card border border-dashed border-line px-3.5 py-6 text-center text-xs text-mist-700">
             Nothing here yet
           </li>
         )}

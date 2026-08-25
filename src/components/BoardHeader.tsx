@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button, cx } from "./ui";
 import { PresenceBar } from "./Presence";
+import { ThemeToggle } from "./ThemeToggle";
 import { PHASES, type Board, type Peer, type Phase } from "@/lib/types";
 import type { Participant } from "@/lib/useParticipant";
 
@@ -50,7 +51,7 @@ export function BoardHeader({
   const budget = board.votesPerParticipant;
 
   return (
-    <header className="z-20 border-b border-white/6 bg-ink-950/70 backdrop-blur-xl sm:sticky sm:top-0">
+    <header className="z-20 border-b border-line bg-ink-950/70 backdrop-blur-xl sm:sticky sm:top-0">
       <div className="mx-auto flex max-w-[110rem] flex-wrap items-center gap-x-4 gap-y-3 px-4 py-3 sm:px-6">
         <Link
           href="/"
@@ -77,14 +78,14 @@ export function BoardHeader({
               if (event.key === "Enter") event.currentTarget.blur();
               if (event.key === "Escape") setEditingTitle(false);
             }}
-            className="min-w-0 flex-1 rounded-md bg-white/6 px-2 py-1 text-base font-semibold text-mist-100 outline-none"
+            className="min-w-0 flex-1 rounded-md bg-fill-2 px-2 py-1 text-base font-semibold text-mist-100 outline-none"
           />
         ) : (
           <button
             type="button"
             onClick={() => setEditingTitle(true)}
             title="Rename board"
-            className="min-w-0 truncate rounded-md px-1 text-left text-base font-semibold tracking-tight text-mist-100 hover:bg-white/6"
+            className="min-w-0 truncate rounded-md px-1 text-left text-base font-semibold tracking-tight text-mist-100 hover:bg-fill-2"
           >
             {board.title}
           </button>
@@ -101,7 +102,7 @@ export function BoardHeader({
                 "relative shrink-0 rounded-lg px-2.5 py-1.5 text-[12px] font-medium capitalize transition-colors",
                 board.phase === phase
                   ? "bg-accent/15 text-accent-soft ring-1 ring-accent/30"
-                  : "text-mist-700 hover:bg-white/6 hover:text-mist-300",
+                  : "text-mist-700 hover:bg-fill-2 hover:text-mist-300",
               )}
             >
               <span className="mr-1.5 font-mono text-[10px] opacity-60">
@@ -118,7 +119,7 @@ export function BoardHeader({
           {budget > 0 && (
             <span
               title="Votes you have left"
-              className="hidden rounded-lg border border-white/7 bg-white/3 px-2.5 py-1.5 text-[12px] tabular-nums text-mist-500 sm:block"
+              className="hidden rounded-lg border border-line bg-fill-1 px-2.5 py-1.5 text-[12px] tabular-nums text-mist-500 sm:block"
             >
               {budget - votesUsed} {budget - votesUsed === 1 ? "vote" : "votes"} left
             </span>
@@ -149,8 +150,10 @@ export function BoardHeader({
                 event.currentTarget.blur();
               }
             }}
-            className="w-28 rounded-lg border border-white/7 bg-white/3 px-2.5 py-1.5 text-[12px] text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50 sm:w-36"
+            className="w-28 rounded-lg border border-line bg-fill-1 px-2.5 py-1.5 text-[12px] text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50 sm:w-36"
           />
+
+          <ThemeToggle />
 
           <Button size="sm" variant="primary" onClick={share}>
             {copied ? "Copied" : "Share"}

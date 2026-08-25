@@ -111,7 +111,7 @@ export function AiPanel({
             disabled={!aiEnabled || busy !== null || (cardCount === 0 && pass.id !== "nudge")}
             onClick={() => invoke(pass.id)}
             className={cx(
-              "group flex flex-col gap-1 rounded-xl border border-white/7 bg-white/3 p-3 text-left",
+              "group flex flex-col gap-1 rounded-xl border border-line bg-fill-1 p-3 text-left",
               "transition-all duration-150 hover:border-accent/40 hover:bg-accent/8",
               "disabled:pointer-events-none disabled:opacity-35",
               busy === pass.id && "border-accent/50 bg-accent/10",
@@ -153,10 +153,10 @@ export function AiPanel({
       )}
 
       {nudge && !busy && (
-        <div className="mt-4 animate-rise space-y-2.5 rounded-xl border border-white/7 bg-white/3 p-3.5">
+        <div className="mt-4 animate-rise space-y-2.5 rounded-xl border border-line bg-fill-1 p-3.5">
           <Label>Facilitator</Label>
           <p className="text-sm leading-relaxed text-mist-300">{nudge.observation}</p>
-          <ul className="space-y-2 border-t border-white/6 pt-2.5">
+          <ul className="space-y-2 border-t border-line pt-2.5">
             {nudge.prompts.map((prompt, index) => (
               <li key={index} className="flex gap-2.5 text-sm text-mist-100">
                 <span className="shrink-0 font-mono text-[11px] text-accent-soft">
@@ -175,7 +175,7 @@ export function AiPanel({
           {proposals.map((proposal, index) => (
             <div
               key={index}
-              className="rounded-xl border border-white/7 bg-white/3 p-3 transition-colors hover:border-white/12"
+              className="rounded-xl border border-line bg-fill-1 p-3 transition-colors hover:border-line-strong"
             >
               <p className="text-sm leading-relaxed text-mist-100">{proposal.text}</p>
               <p className="mt-1 text-[11px] leading-snug text-mist-700">
@@ -215,7 +215,7 @@ export function AiPanel({
         <div className="mt-4 space-y-2">
           <Label>Themes</Label>
           {state.themes.map((theme) => (
-            <div key={theme.id} className="rounded-xl border border-white/7 bg-white/3 p-3">
+            <div key={theme.id} className="rounded-xl border border-line bg-fill-1 p-3">
               <p className="text-[13px] font-medium text-mist-100">{theme.label}</p>
               {theme.summary && (
                 <p className="mt-0.5 text-[11px] leading-snug text-mist-700">

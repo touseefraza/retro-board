@@ -46,7 +46,7 @@ export function Cursors({ peers }: { peers: Peer[] }) {
           </svg>
           <span
             style={{ backgroundColor: colorOf(peer.id) }}
-            className="ml-3 inline-block max-w-[12rem] truncate rounded-md px-1.5 py-0.5 text-[11px] font-semibold text-ink-950 shadow-sm"
+            className="ml-3 inline-block max-w-[12rem] truncate rounded-md px-1.5 py-0.5 text-[11px] font-semibold text-ink-fixed shadow-sm"
           >
             {peer.name}
           </span>
@@ -73,7 +73,7 @@ export function PresenceBar({ self, peers }: { self: Participant; peers: Peer[] 
             key={one.id}
             title={one.name}
             style={{ backgroundColor: colorOf(one.id) }}
-            className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-ink-950 ring-2 ring-ink-950"
+            className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-ink-fixed ring-2 ring-ink-950"
           >
             {initials(one.name)}
           </span>

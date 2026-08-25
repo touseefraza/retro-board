@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "./ui";
+import { ThemeToggle } from "./ThemeToggle";
 import { hue, initials, VISITOR_NAME } from "@/lib/names";
 import type { Participant } from "@/lib/useParticipant";
 
@@ -34,11 +35,11 @@ export function NameGate({
         <div className="flex items-center gap-3">
           <span
             style={{ backgroundColor: colour }}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-[11px] font-bold text-ink-950"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-[11px] font-bold text-ink-fixed"
           >
             {initials(named ? name : VISITOR_NAME)}
           </span>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <h1 className="text-base font-semibold tracking-tight text-mist-100">
               Join the retro
             </h1>
@@ -46,6 +47,8 @@ export function NameGate({
               <p className="truncate text-[12px] text-mist-700">{boardTitle}</p>
             )}
           </div>
+
+          <ThemeToggle />
         </div>
 
         <label
@@ -62,7 +65,7 @@ export function NameGate({
           placeholder="Enter your name"
           onChange={(event) => setName(event.target.value)}
           onKeyDown={(event) => event.key === "Enter" && submit()}
-          className="mt-2 h-11 w-full rounded-xl border border-white/8 bg-white/3 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
+          className="mt-2 h-11 w-full rounded-xl border border-line bg-fill-1 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
         />
 
         <Button variant="primary" onClick={submit} className="mt-3 h-11 w-full">

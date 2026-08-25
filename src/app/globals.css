@@ -1,20 +1,32 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Design tokens. Dark-first: a retro is usually run on a shared screen, and the
-   coloured sticky notes read best against a near-black ground.
+   Design tokens.
+
+   Every colour below is a switchable custom property: the @theme block holds
+   the dark values, and the [data-theme="light"] block redefines the same names.
+   Because Tailwind's utilities compile to var(--color-*), overriding the
+   variable is enough — no utility in a component needs to know which theme is
+   on, so nothing hardcodes `white/…` any more.
+
+   Text colours are chosen for contrast against their own ground: every pairing
+   used for real text clears WCAG AA (4.5:1). mist-700 in particular used to sit
+   at 2.8:1 on the near-black ground, which is what made the quiet labels — card
+   counts, hints, blurbs — read as barely there.
 --------------------------------------------------------------------------- */
 @theme {
+  /* Page grounds, darkest first. */
   --color-ink-950: #08080b;
   --color-ink-900: #0c0c11;
   --color-ink-800: #14141c;
   --color-ink-700: #1c1c27;
   --color-ink-600: #262633;
 
+  /* Text, brightest first. */
   --color-mist-100: #f4f4f7;
   --color-mist-300: #c6c6d4;
-  --color-mist-500: #8b8ba3;
-  --color-mist-700: #56566b;
+  --color-mist-500: #a2a2b8;
+  --color-mist-700: #767690;
 
   --color-accent: #7f6cff;
   --color-accent-soft: #a99dff;
@@ -25,6 +37,21 @@
   --color-tone-idea: #fbbf24;
   --color-tone-neutral: #60a5fa;
 
+  /* Fills and lines layered over the ground — the old `white/N` utilities. */
+  --color-fill-1: rgb(255 255 255 / 0.035);
+  --color-fill-2: rgb(255 255 255 / 0.065);
+  --color-fill-3: rgb(255 255 255 / 0.11);
+  --color-line: rgb(255 255 255 / 0.09);
+  --color-line-strong: rgb(255 255 255 / 0.18);
+  --color-scrim: rgb(0 0 0 / 0.3);
+
+  --color-shimmer-base: rgb(255 255 255 / 0.05);
+  --color-shimmer-peak: rgb(255 255 255 / 0.14);
+
+  /* Never flips: text that sits on a saturated chip (cursor labels, avatars,
+     checked boxes) wants a dark ink in both themes. */
+  --color-ink-fixed: #08080b;
+
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
@@ -32,6 +59,47 @@
 
   --animate-rise: rise 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   --animate-shimmer: shimmer 1.6s linear infinite;
+}
+
+/* The light theme inverts the grounds and darkens every ink so it keeps the
+   same contrast against white that the dark palette has against near-black. */
+html[data-theme="light"] {
+  --color-ink-950: #fbfbfd;
+  --color-ink-900: #f4f4f7;
+  --color-ink-800: #edeef3;
+  --color-ink-700: #e3e5ec;
+  --color-ink-600: #d2d6e0;
+
+  --color-mist-100: #0e1020;
+  --color-mist-300: #2c3040;
+  --color-mist-500: #464b5e;
+  --color-mist-700: #5f6478;
+
+  --color-accent: #6248e8;
+  --color-accent-soft: #5b46e0;
+
+  --color-tone-positive: #047857;
+  --color-tone-negative: #be123c;
+  --color-tone-idea: #a16207;
+  --color-tone-neutral: #1d4ed8;
+
+  --color-fill-1: rgb(14 16 32 / 0.035);
+  --color-fill-2: rgb(14 16 32 / 0.06);
+  --color-fill-3: rgb(14 16 32 / 0.1);
+  --color-line: rgb(14 16 32 / 0.12);
+  --color-line-strong: rgb(14 16 32 / 0.22);
+  --color-scrim: rgb(0 0 0 / 0.25);
+
+  --color-shimmer-base: rgb(14 16 32 / 0.05);
+  --color-shimmer-peak: rgb(14 16 32 / 0.13);
+}
+
+html {
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
 }
 
 @keyframes rise {
@@ -54,23 +122,30 @@
   }
 }
 
-html {
-  color-scheme: dark;
-}
-
 body {
   background-color: var(--color-ink-950);
   color: var(--color-mist-100);
   font-family: var(--font-sans);
-  /* Two soft light sources so the flat black doesn't read as dead space. */
+  /* Two soft light sources so the flat ground doesn't read as dead space. */
   background-image:
     radial-gradient(70rem 40rem at 12% -10%, rgb(127 108 255 / 0.16), transparent 60%),
     radial-gradient(60rem 34rem at 92% 0%, rgb(52 211 153 / 0.09), transparent 55%);
   background-attachment: fixed;
 }
 
+/* The same washes at a weight that reads on white instead of bleaching out. */
+html[data-theme="light"] body {
+  background-image:
+    radial-gradient(70rem 40rem at 12% -10%, rgb(98 72 232 / 0.1), transparent 60%),
+    radial-gradient(60rem 34rem at 92% 0%, rgb(4 120 87 / 0.07), transparent 55%);
+}
+
 ::selection {
   background: rgb(127 108 255 / 0.35);
+}
+
+html[data-theme="light"] ::selection {
+  background: rgb(98 72 232 / 0.22);
 }
 
 /* Slim scrollbars — the board is a horizontally scrolling surface. */
@@ -80,8 +155,8 @@ body {
 }
 
 @utility surface {
-  background: rgb(255 255 255 / 0.035);
-  border: 1px solid rgb(255 255 255 / 0.07);
+  background: var(--color-fill-1);
+  border: 1px solid var(--color-line);
   backdrop-filter: blur(12px);
 }
 

@@ -47,8 +47,8 @@ export function ActionsPanel({
               className={cx(
                 "mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-[5px] border transition-colors",
                 item.done
-                  ? "border-tone-positive bg-tone-positive text-ink-950"
-                  : "border-white/18 hover:border-accent",
+                  ? "border-tone-positive bg-tone-positive text-ink-fixed"
+                  : "border-line-strong hover:border-accent",
               )}
             >
               {item.done && (
@@ -99,7 +99,7 @@ export function ActionsPanel({
         onChange={(event) => setDraft(event.target.value)}
         onKeyDown={(event) => event.key === "Enter" && submit()}
         className={cx(
-          "w-full rounded-lg border border-white/7 bg-white/3 px-3 py-2 text-[13px]",
+          "w-full rounded-lg border border-line bg-fill-1 px-3 py-2 text-[13px]",
           "text-mist-100 placeholder:text-mist-700 outline-none transition-colors",
           "focus:border-accent/50",
           items.length > 0 && "mt-3",

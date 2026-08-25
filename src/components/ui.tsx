@@ -49,9 +49,9 @@ const VARIANTS = {
   primary:
     "bg-accent text-white hover:bg-accent-soft shadow-[0_6px_20px_-8px_var(--color-accent)]",
   ghost:
-    "surface text-mist-100 hover:bg-white/8 hover:border-white/15",
+    "surface text-mist-100 hover:bg-fill-3 hover:border-line-strong",
   quiet:
-    "text-mist-500 hover:text-mist-100 hover:bg-white/6",
+    "text-mist-500 hover:text-mist-100 hover:bg-fill-2",
 } as const;
 
 const SIZES = {
@@ -94,7 +94,7 @@ export function Panel({
   return (
     <section className={cx("surface rounded-2xl", className)}>
       {(title || action) && (
-        <header className="flex items-center justify-between gap-3 border-b border-white/6 px-4 py-3">
+        <header className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
           <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mist-500">
             {title}
           </h2>
@@ -122,7 +122,7 @@ export function Shimmer({ lines = 3 }: { lines?: number }) {
         <div
           key={index}
           style={{ width: `${100 - index * 12}%` }}
-          className="h-3 rounded-full bg-[linear-gradient(90deg,rgba(255,255,255,0.05),rgba(255,255,255,0.14),rgba(255,255,255,0.05))] bg-[length:200%_100%] animate-shimmer"
+          className="h-3 rounded-full bg-[linear-gradient(90deg,var(--color-shimmer-base),var(--color-shimmer-peak),var(--color-shimmer-base))] bg-[length:200%_100%] animate-shimmer"
         />
       ))}
     </div>

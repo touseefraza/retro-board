@@ -61,7 +61,7 @@ export function CreateBoard() {
                 "rounded-2xl border p-4 text-left transition-all duration-150",
                 selected
                   ? "border-accent/45 bg-accent/8"
-                  : "border-white/7 bg-white/2 hover:border-white/14 hover:bg-white/4",
+                  : "border-line bg-fill-1 hover:border-line-strong hover:bg-fill-2",
               )}
             >
               <span className="flex items-center gap-1.5">
@@ -91,7 +91,7 @@ export function CreateBoard() {
           onKeyDown={(event) => event.key === "Enter" && create()}
           aria-label="Board name"
           maxLength={80}
-          className="h-11 w-full rounded-xl border border-white/8 bg-white/3 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
+          className="h-11 w-full rounded-xl border border-line bg-fill-1 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
         />
 
         <div className="flex flex-col gap-2.5 sm:flex-row">
@@ -102,7 +102,7 @@ export function CreateBoard() {
             onKeyDown={(event) => event.key === "Enter" && create()}
             aria-label="Your name"
             maxLength={60}
-            className="h-11 flex-1 rounded-xl border border-white/8 bg-white/3 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
+            className="h-11 flex-1 rounded-xl border border-line bg-fill-1 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
           />
           <Button
             variant="primary"

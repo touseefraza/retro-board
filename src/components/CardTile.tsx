@@ -38,10 +38,10 @@ export function CardTile({
 
   if (card.masked) {
     return (
-      <li className="animate-rise rounded-card border border-white/6 border-l-2 border-l-white/15 bg-white/3 px-3.5 py-3">
+      <li className="animate-rise rounded-card border border-line border-l-2 border-l-line-strong bg-fill-1 px-3.5 py-3">
         <div className="space-y-1.5" aria-label="Hidden until reveal">
-          <div className="h-2.5 w-full rounded-full bg-white/8" />
-          <div className="h-2.5 w-4/5 rounded-full bg-white/8" />
+          <div className="h-2.5 w-full rounded-full bg-fill-3" />
+          <div className="h-2.5 w-4/5 rounded-full bg-fill-3" />
         </div>
       </li>
     );
@@ -57,8 +57,8 @@ export function CardTile({
   return (
     <li
       className={cx(
-        "group animate-rise rounded-card border border-white/7 border-l-2 bg-white/4 px-3.5 py-3",
-        "transition-colors hover:border-white/12 hover:bg-white/6",
+        "group animate-rise rounded-card border border-line border-l-2 bg-fill-2 px-3.5 py-3",
+        "transition-colors hover:border-line-strong hover:bg-fill-2",
         TONE[tone].border,
       )}
     >
@@ -79,7 +79,7 @@ export function CardTile({
               setEditing(false);
             }
           }}
-          className="w-full resize-none rounded-md bg-black/30 p-2 text-sm leading-relaxed text-mist-100 outline-none"
+          className="w-full resize-none rounded-md bg-scrim p-2 text-sm leading-relaxed text-mist-100 outline-none"
         />
       ) : (
         <p className="text-sm leading-relaxed whitespace-pre-wrap text-mist-100">
@@ -119,7 +119,7 @@ export function CardTile({
               "text-[11px] font-semibold ring-1 transition-all duration-150 active:scale-95",
               card.votedByMe
                 ? TONE[tone].chip
-                : "bg-white/5 text-mist-500 ring-white/8 hover:bg-white/10 hover:text-mist-300",
+                : "bg-fill-2 text-mist-500 ring-line hover:bg-fill-3 hover:text-mist-300",
               !canVote && !card.votedByMe && "cursor-not-allowed opacity-40",
               phase === "collect" && "opacity-60",
             )}
@@ -155,7 +155,7 @@ function IconButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="rounded-md p-1 text-mist-700 opacity-0 transition-opacity hover:bg-white/8 hover:text-mist-300 focus-visible:opacity-100 group-hover:opacity-100"
+      className="rounded-md p-1 text-mist-700 opacity-0 transition-opacity hover:bg-fill-3 hover:text-mist-300 focus-visible:opacity-100 group-hover:opacity-100"
     >
       <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         {children}

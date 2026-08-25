@@ -56,8 +56,8 @@ export function SetupNotice({
               className={cx(
                 "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold",
                 step.done
-                  ? "bg-tone-positive text-ink-950"
-                  : "bg-white/8 text-mist-500",
+                  ? "bg-tone-positive text-ink-fixed"
+                  : "bg-fill-3 text-mist-500",
               )}
             >
               {step.done ? "✓" : "!"}

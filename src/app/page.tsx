@@ -1,4 +1,5 @@
 import { CreateBoard } from "@/components/CreateBoard";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { SetupNotice } from "@/components/SetupNotice";
 import { isAiConfigured } from "@/lib/ai";
 import { isDatabaseConfigured } from "@/lib/db";
@@ -68,6 +69,8 @@ export default function Home() {
         <span className="text-sm font-semibold tracking-tight text-mist-300">
           Retro Board
         </span>
+
+        <ThemeToggle className="ml-auto" />
       </div>
 
       <h1 className="mt-10 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight text-mist-100 sm:text-6xl">
@@ -88,7 +91,7 @@ export default function Home() {
         <CreateBoard />
       </div>
 
-      <section className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-white/7 bg-white/6 sm:grid-cols-2">
+      <section className="mt-20 grid gap-px overflow-hidden rounded-2xl border border-line bg-fill-2 sm:grid-cols-2">
         {features.map((feature) => (
           <div key={feature.title} className="bg-ink-950/80 p-5">
             <h2 className="text-[13px] font-semibold text-mist-100">{feature.title}</h2>
