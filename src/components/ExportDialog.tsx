@@ -16,7 +16,12 @@ const FORMATS: { id: ExportFormat; label: string; hint: string }[] = [
   {
     id: "confluence",
     label: "Confluence",
-    hint: "Wiki markup. In Confluence, open the markup dialog (/markup, or ⌘⇧D) and paste.",
+    hint: "Copies formatted. Paste into a Confluence page and it arrives as real headings and a table.",
+  },
+  {
+    id: "markdown",
+    label: "Markdown",
+    hint: "For Jira, GitHub, Notion, or anywhere that speaks Markdown.",
   },
   {
     id: "text",
@@ -43,6 +48,7 @@ export function ExportDialog({
   const [copied, setCopied] = useState(false);
 
   const output = useMemo(() => render(state, options), [state, options]);
+  const rich = Boolean(output.html);
   const hidden = maskedCount(state);
   const empty = !options.actions && !options.cards;
 
@@ -58,13 +64,26 @@ export function ExportDialog({
     setOptions((current) => ({ ...current, [key]: value }));
 
   const copy = async () => {
-    await navigator.clipboard.writeText(output);
+    // Rich formats go on the clipboard as text/html so the paste target keeps
+    // the structure, with a plain flavour alongside for editors that ignore it.
+    if (output.html && typeof ClipboardItem !== "undefined") {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          "text/html": new Blob([output.html], { type: "text/html" }),
+          "text/plain": new Blob([output.text], { type: "text/plain" }),
+        }),
+      ]);
+    } else {
+      await navigator.clipboard.writeText(output.text);
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
   };
 
   const download = () => {
-    const blob = new Blob([output], { type: "text/plain;charset=utf-8" });
+    const blob = new Blob([output.html ?? output.text], {
+      type: output.html ? "text/html;charset=utf-8" : "text/plain;charset=utf-8",
+    });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -102,7 +121,7 @@ export function ExportDialog({
           <legend className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mist-500">
             Format
           </legend>
-          <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          <div className="mt-2 grid gap-2 sm:grid-cols-3">
             {FORMATS.map((format) => (
               <button
                 key={format.id}
@@ -171,13 +190,22 @@ export function ExportDialog({
               </span>
             )}
           </div>
-          <textarea
-            readOnly
-            value={empty ? "Nothing selected." : output}
-            onFocus={(event) => event.currentTarget.select()}
-            spellCheck={false}
-            className="mt-2 h-56 w-full resize-none rounded-xl border border-line bg-fill-1 p-3 font-mono text-[11px] leading-relaxed text-mist-300 outline-none focus:border-accent/50"
-          />
+          {rich && !empty ? (
+            // Every value in here is escaped by the generator, so what renders
+            // is exactly the markup that goes on the clipboard.
+            <div
+              className="export-preview mt-2 h-56 overflow-y-auto rounded-xl border border-line bg-fill-1 p-3 text-[12px] leading-relaxed text-mist-300"
+              dangerouslySetInnerHTML={{ __html: output.html as string }}
+            />
+          ) : (
+            <textarea
+              readOnly
+              value={empty ? "Nothing selected." : output.text}
+              onFocus={(event) => event.currentTarget.select()}
+              spellCheck={false}
+              className="mt-2 h-56 w-full resize-none rounded-xl border border-line bg-fill-1 p-3 font-mono text-[11px] leading-relaxed text-mist-300 outline-none focus:border-accent/50"
+            />
+          )}
         </div>
 
         <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -189,7 +217,7 @@ export function ExportDialog({
           </Button>
           <p className="ml-auto text-[11px] text-mist-700">
             {options.format === "confluence"
-              ? "Paste into Confluence's markup dialog"
+              ? "Copy, then paste straight into a Confluence page"
               : "Paste anywhere"}
           </p>
         </div>

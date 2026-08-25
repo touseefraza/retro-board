@@ -2,20 +2,55 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { isAiConfigured } from "@/lib/ai";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, siteUrl } from "@/lib/site";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export function generateMetadata(): Metadata {
+  const base = siteUrl();
+  // The facilitator is only worth advertising when there's a key behind it.
+  const description = isAiConfigured()
+    ? `${SITE_DESCRIPTION} Claude groups the cards, drafts the actions, and writes the read-out.`
+    : SITE_DESCRIPTION;
+
   return {
+    metadataBase: new URL(base),
     title: {
-      default: "Retro Board",
-      template: "%s · Retro Board",
+      // Search results show this; the tagline carries the words people type.
+      default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+      template: `%s · ${SITE_NAME}`,
     },
-    // The facilitator is only worth advertising when there's a key behind it.
-    description: isAiConfigured()
-      ? "A retrospective board with a Claude-powered facilitator. No accounts, no setup — create a board, share the link, run the retro."
-      : "A retrospective board for the whole team. No accounts, no setup — create a board, share the link, run the retro.",
+    description,
+    applicationName: SITE_NAME,
+    keywords: [
+      "retro board",
+      "retrospective board",
+      "sprint retrospective",
+      "agile retrospective",
+      "online retro tool",
+      "team retrospective",
+      "free retro board",
+      "scrum retrospective",
+    ],
+    alternates: { canonical: "/" },
+    openGraph: {
+      type: "website",
+      url: base,
+      siteName: SITE_NAME,
+      title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+      description,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    },
   };
 }
 

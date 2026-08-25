@@ -3,6 +3,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { SetupNotice } from "@/components/SetupNotice";
 import { isAiConfigured } from "@/lib/ai";
 import { isDatabaseConfigured } from "@/lib/db";
+import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/site";
 
 /** Shown when a Claude key is configured — every one of these is an AI pass. */
 const AI_FEATURES = [
@@ -55,8 +56,33 @@ export default function Home() {
   const hasAi = isAiConfigured();
   const features = hasAi ? AI_FEATURES : BOARD_FEATURES;
 
+  // Structured data: tells search engines what this page *is*, which is what
+  // earns a rich result rather than a bare blue link.
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: SITE_NAME,
+    url: siteUrl(),
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Any",
+    description: SITE_DESCRIPTION,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    featureList: [
+      "Sprint retrospective templates",
+      "Live cursors and real-time collaboration",
+      "Dot voting with a per-person budget",
+      "Action items with owners",
+      "Export to Confluence, Markdown or plain text",
+    ],
+  };
+
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-8 pb-20 sm:px-6 sm:pt-12 sm:pb-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+
       <div className="flex items-center gap-2.5">
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/15 ring-1 ring-accent/30">
           <svg viewBox="0 0 16 16" className="h-4 w-4 text-accent-soft" fill="currentColor" aria-hidden="true">

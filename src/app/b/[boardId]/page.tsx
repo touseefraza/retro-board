@@ -13,14 +13,18 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata(
   props: PageProps<"/b/[boardId]">,
 ): Promise<Metadata> {
-  if (!isDatabaseConfigured()) return { title: "Setup" };
+  if (!isDatabaseConfigured()) return { title: "Setup", robots: { index: false } };
 
   const { boardId } = await props.params;
   const sql = await db();
   const rows = await sql<{ title: string }[]>`
     select title from boards where id = ${boardId}
   `;
-  return { title: rows[0]?.title ?? "Board" };
+  return {
+    title: rows[0]?.title ?? "Board",
+    // A board is a private link holding a team's own words. Never index it.
+    robots: { index: false, follow: false, nocache: true },
+  };
 }
 
 export default async function BoardPage(props: PageProps<"/b/[boardId]">) {
