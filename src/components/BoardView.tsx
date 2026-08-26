@@ -174,30 +174,33 @@ export function BoardView({
             />
           )}
 
-          <ActionsPanel
-            items={state.actionItems}
-            onAdd={(text) =>
-              mutate("/actions", { method: "POST", body: JSON.stringify({ text }) })
-            }
-            onToggle={(itemId, done) =>
-              mutate(
-                `/actions/${itemId}`,
-                { method: "PATCH", body: JSON.stringify({ done }) },
-                (current) => ({
+          {state.board.showActions && (
+            <ActionsPanel
+              label={state.board.actionsLabel}
+              items={state.actionItems}
+              onAdd={(text) =>
+                mutate("/actions", { method: "POST", body: JSON.stringify({ text }) })
+              }
+              onToggle={(itemId, done) =>
+                mutate(
+                  `/actions/${itemId}`,
+                  { method: "PATCH", body: JSON.stringify({ done }) },
+                  (current) => ({
+                    ...current,
+                    actionItems: current.actionItems.map((item) =>
+                      item.id === itemId ? { ...item, done } : item,
+                    ),
+                  }),
+                )
+              }
+              onDelete={(itemId) =>
+                mutate(`/actions/${itemId}`, { method: "DELETE" }, (current) => ({
                   ...current,
-                  actionItems: current.actionItems.map((item) =>
-                    item.id === itemId ? { ...item, done } : item,
-                  ),
-                }),
-              )
-            }
-            onDelete={(itemId) =>
-              mutate(`/actions/${itemId}`, { method: "DELETE" }, (current) => ({
-                ...current,
-                actionItems: current.actionItems.filter((item) => item.id !== itemId),
-              }))
-            }
-          />
+                  actionItems: current.actionItems.filter((item) => item.id !== itemId),
+                }))
+              }
+            />
+          )}
 
           {!canVote && (
             <p className="px-1 text-[11px] text-mist-700">

@@ -7,6 +7,9 @@ export const POST = route(async (request: Request) => {
     title?: string;
     template?: string;
     votesPerParticipant?: number;
+    columns?: { title?: string; tone?: string }[];
+    actionsLabel?: string;
+    showActions?: boolean;
   }>(request);
 
   const boardId = await createBoard(body);

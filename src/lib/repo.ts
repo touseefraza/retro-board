@@ -1,7 +1,9 @@
 import { db } from "./db";
 import { newId } from "./ids";
 import {
+  COLUMN_LIMITS,
   TEMPLATES,
+  TONES,
   type ActionItem,
   type Board,
   type BoardState,
@@ -9,7 +11,9 @@ import {
   type Column,
   type Peer,
   type Phase,
+  type TemplateColumn,
   type Theme,
+  type Tone,
 } from "./types";
 
 /** Every mutation bumps `version` so pollers can skip unchanged boards. */
@@ -22,23 +26,39 @@ export async function createBoard(input: {
   title?: string;
   template?: string;
   votesPerParticipant?: number;
+  /** A hand-built column set. Overrides `template` when present. */
+  columns?: { title?: string; tone?: string }[];
+  actionsLabel?: string;
+  showActions?: boolean;
 }): Promise<string> {
   const sql = await db();
   const templateId =
     input.template && input.template in TEMPLATES ? input.template : "classic";
   const template = TEMPLATES[templateId];
+
+  const custom = normaliseColumns(input.columns);
+  const columns = custom ?? template.columns;
+
   const boardId = newId();
-  const title = input.title?.trim() || template.name;
+  const title = input.title?.trim() || (custom ? "Retro" : template.name);
   const votes = clampVotes(input.votesPerParticipant ?? 5);
+  const actionsLabel =
+    input.actionsLabel?.trim().slice(0, 40) || "Action items";
+  const showActions = input.showActions !== false;
 
   await sql.begin(async (tx) => {
     await tx`
-      insert into boards (id, title, template, votes_per_participant)
-      values (${boardId}, ${title}, ${templateId}, ${votes})
+      insert into boards (
+        id, title, template, votes_per_participant, actions_label, show_actions
+      )
+      values (
+        ${boardId}, ${title}, ${custom ? "custom" : templateId}, ${votes},
+        ${actionsLabel}, ${showActions}
+      )
     `;
     await tx`
       insert into columns ${tx(
-        template.columns.map((column, index) => ({
+        columns.map((column, index) => ({
           id: newId(),
           board_id: boardId,
           title: column.title,
@@ -50,6 +70,29 @@ export async function createBoard(input: {
   });
 
   return boardId;
+}
+
+/**
+ * Trims a hand-built column set to something the board can render: named,
+ * within bounds, and with a tone the UI has a colour for. Returns null when
+ * nothing usable was supplied, which falls back to the chosen template.
+ */
+function normaliseColumns(
+  input: { title?: string; tone?: string }[] | undefined,
+): TemplateColumn[] | null {
+  if (!Array.isArray(input)) return null;
+
+  const columns = input
+    .map((column, index) => ({
+      title: (column.title ?? "").trim().slice(0, COLUMN_LIMITS.titleLength),
+      tone: (TONES as string[]).includes(column.tone ?? "")
+        ? (column.tone as Tone)
+        : TONES[index % TONES.length],
+    }))
+    .filter((column) => column.title.length > 0)
+    .slice(0, COLUMN_LIMITS.max);
+
+  return columns.length >= COLUMN_LIMITS.min ? columns : null;
 }
 
 function clampVotes(value: number): number {
@@ -81,6 +124,8 @@ export async function getBoardState(
       masked: boolean;
       votes_per_participant: number;
       summary: string | null;
+      actions_label: string;
+      show_actions: boolean;
       version: number;
       created_at: Date;
     }[]
@@ -146,6 +191,8 @@ export async function getBoardState(
     masked: b.masked,
     votesPerParticipant: b.votes_per_participant,
     summary: b.summary,
+    actionsLabel: b.actions_label,
+    showActions: b.show_actions,
     version: b.version,
     createdAt: b.created_at.toISOString(),
   };

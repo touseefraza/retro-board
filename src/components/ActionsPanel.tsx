@@ -10,11 +10,13 @@ import type { ActionItem } from "@/lib/types";
  * instead of 32px above them, where a Panel's own title row used to sit.
  */
 export function ActionsPanel({
+  label = "Action items",
   items,
   onAdd,
   onToggle,
   onDelete,
 }: {
+  label?: string;
   items: ActionItem[];
   onAdd: (text: string) => void;
   onToggle: (itemId: string, done: boolean) => void;
@@ -36,7 +38,7 @@ export function ActionsPanel({
       <header className="flex items-center gap-2.5 px-1">
         <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_28px_-12px_var(--color-accent)]" />
         <h2 className="text-sm font-semibold tracking-tight text-mist-100">
-          Action items
+          {label}
         </h2>
         <span className="ml-auto text-xs tabular-nums text-mist-700">
           {open} open / {items.length}

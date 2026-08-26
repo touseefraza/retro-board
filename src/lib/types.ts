@@ -53,6 +53,10 @@ export type Board = {
   masked: boolean;
   votesPerParticipant: number;
   summary: string | null;
+  /** What the actions section is called on this board. */
+  actionsLabel: string;
+  /** Whether this board tracks actions at all. */
+  showActions: boolean;
   /** Monotonic counter bumped on every write; drives cheap client polling. */
   version: number;
   createdAt: string;
@@ -83,6 +87,20 @@ export type BoardState = {
 };
 
 export type TemplateColumn = { title: string; tone: Tone };
+
+/** Bounds on a hand-built board, enforced on both sides. */
+export const COLUMN_LIMITS = { min: 1, max: 8, titleLength: 40 } as const;
+
+/** The tones a column can take, in the order the builder offers them. */
+export const TONES: Tone[] = ["positive", "negative", "neutral", "idea"];
+
+/** Human labels for the tone swatches in the builder. */
+export const TONE_LABELS: Record<Tone, string> = {
+  positive: "Green",
+  negative: "Red",
+  neutral: "Blue",
+  idea: "Amber",
+};
 
 /** Ready-made retro formats — a board is one click, no configuration. */
 export const TEMPLATES: Record<

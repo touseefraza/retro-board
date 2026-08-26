@@ -43,6 +43,8 @@ create table if not exists boards (
   masked                boolean     not null default false,
   votes_per_participant integer     not null default 5,
   summary               text,
+  actions_label         text        not null default 'Action items',
+  show_actions          boolean     not null default true,
   version               integer     not null default 0,
   created_at            timestamptz not null default now()
 );
@@ -106,6 +108,10 @@ create table if not exists presence (
   primary key (board_id, participant_id)
 );
 create index if not exists presence_board_seen_idx on presence(board_id, seen_at);
+
+-- Added after the first release; a create-if-not-exists won't backfill them.
+alter table boards add column if not exists actions_label text not null default 'Action items';
+alter table boards add column if not exists show_actions boolean not null default true;
 `;
 
 /**
