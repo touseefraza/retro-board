@@ -18,7 +18,7 @@ export function generateMetadata(): Metadata {
     metadataBase: new URL(base),
     title: {
       // Search results show this; the tagline carries the words people type.
-      default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+      default: `${SITE_NAME} | ${SITE_TAGLINE}`,
       template: `%s · ${SITE_NAME}`,
     },
     description,
@@ -38,12 +38,12 @@ export function generateMetadata(): Metadata {
       type: "website",
       url: base,
       siteName: SITE_NAME,
-      title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+      title: `${SITE_NAME} | ${SITE_TAGLINE}`,
       description,
     },
     twitter: {
       card: "summary_large_image",
-      title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+      title: `${SITE_NAME} | ${SITE_TAGLINE}`,
       description,
     },
     robots: {
