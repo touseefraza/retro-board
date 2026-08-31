@@ -45,6 +45,8 @@ create table if not exists boards (
   summary               text,
   actions_label         text        not null default 'Action items',
   show_actions          boolean     not null default true,
+  timer_seconds         integer     not null default 300,
+  timer_ends_at         timestamptz,
   version               integer     not null default 0,
   created_at            timestamptz not null default now()
 );
@@ -112,6 +114,8 @@ create index if not exists presence_board_seen_idx on presence(board_id, seen_at
 -- Added after the first release; a create-if-not-exists won't backfill them.
 alter table boards add column if not exists actions_label text not null default 'Action items';
 alter table boards add column if not exists show_actions boolean not null default true;
+alter table boards add column if not exists timer_seconds integer not null default 300;
+alter table boards add column if not exists timer_ends_at timestamptz;
 `;
 
 /**

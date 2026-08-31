@@ -3,6 +3,7 @@ import { newId } from "./ids";
 import {
   COLUMN_LIMITS,
   TEMPLATES,
+  TIMER_LIMITS,
   TONES,
   type ActionItem,
   type Board,
@@ -95,6 +96,11 @@ function normaliseColumns(
   return columns.length >= COLUMN_LIMITS.min ? columns : null;
 }
 
+function clampTimer(value: number): number {
+  if (!Number.isFinite(value)) return TIMER_LIMITS.default;
+  return Math.min(TIMER_LIMITS.max, Math.max(TIMER_LIMITS.min, Math.trunc(value)));
+}
+
 function clampVotes(value: number): number {
   if (!Number.isFinite(value)) return 5;
   return Math.min(20, Math.max(0, Math.trunc(value)));
@@ -124,6 +130,8 @@ export async function getBoardState(
       masked: boolean;
       votes_per_participant: number;
       summary: string | null;
+      timer_seconds: number;
+      timer_ends_at: Date | null;
       actions_label: string;
       show_actions: boolean;
       version: number;
@@ -191,6 +199,8 @@ export async function getBoardState(
     masked: b.masked,
     votesPerParticipant: b.votes_per_participant,
     summary: b.summary,
+    timerSeconds: b.timer_seconds,
+    timerEndsAt: b.timer_ends_at ? b.timer_ends_at.toISOString() : null,
     actionsLabel: b.actions_label,
     showActions: b.show_actions,
     version: b.version,
@@ -376,6 +386,10 @@ export async function updateBoard(
     masked?: boolean;
     votesPerParticipant?: number;
     summary?: string | null;
+    /** Countdown length. Ignored while a timer is running. */
+    timerSeconds?: number;
+    /** True starts a run from now; false clears it. */
+    timerRunning?: boolean;
   },
 ): Promise<boolean> {
   const sql = await db();
@@ -387,6 +401,26 @@ export async function updateBoard(
     sets.votes_per_participant = clampVotes(patch.votesPerParticipant);
   }
   if (patch.summary !== undefined) sets.summary = patch.summary;
+
+  const seconds =
+    patch.timerSeconds === undefined ? undefined : clampTimer(patch.timerSeconds);
+  if (seconds !== undefined) sets.timer_seconds = seconds;
+
+  if (patch.timerRunning !== undefined) {
+    if (patch.timerRunning) {
+      // The end time is computed on the server so every client counts down to
+      // the same instant rather than to its own clock plus a duration.
+      const [row] = await sql<{ timer_seconds: number }[]>`
+        select timer_seconds from boards where id = ${boardId}
+      `;
+      if (!row) return false;
+      const run = seconds ?? row.timer_seconds;
+      sets.timer_ends_at = new Date(Date.now() + run * 1000);
+    } else {
+      sets.timer_ends_at = null;
+    }
+  }
+
   if (!Object.keys(sets).length) return false;
 
   const rows = await sql`

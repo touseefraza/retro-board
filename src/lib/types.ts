@@ -53,6 +53,10 @@ export type Board = {
   masked: boolean;
   votesPerParticipant: number;
   summary: string | null;
+  /** Countdown length in seconds, kept between runs. */
+  timerSeconds: number;
+  /** When the running timer fires, or null when it isn't running. */
+  timerEndsAt: string | null;
   /** What the actions section is called on this board. */
   actionsLabel: string;
   /** Whether this board tracks actions at all. */
@@ -89,6 +93,9 @@ export type BoardState = {
 export type TemplateColumn = { title: string; tone: Tone };
 
 /** Bounds on a hand-built board, enforced on both sides. */
+/** Timer bounds, in seconds. One minute steps between them. */
+export const TIMER_LIMITS = { min: 60, max: 3600, step: 60, default: 300 } as const;
+
 export const COLUMN_LIMITS = { min: 1, max: 8, titleLength: 40 } as const;
 
 /** The tones a column can take, in the order the builder offers them. */

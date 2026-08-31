@@ -34,6 +34,8 @@ export const PATCH = route(async (request: Request, ctx: Ctx) => {
     phase?: string;
     masked?: boolean;
     votesPerParticipant?: number;
+    timerSeconds?: number;
+    timerRunning?: boolean;
   }>(request);
 
   if (body.phase !== undefined && !PHASES.includes(body.phase as Phase)) {
@@ -45,6 +47,8 @@ export const PATCH = route(async (request: Request, ctx: Ctx) => {
     phase: body.phase as Phase | undefined,
     masked: body.masked,
     votesPerParticipant: body.votesPerParticipant,
+    timerSeconds: body.timerSeconds,
+    timerRunning: body.timerRunning,
   });
   if (!updated) return fail(404, "Board not found, or nothing to update");
 
