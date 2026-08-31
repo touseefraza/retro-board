@@ -8,7 +8,6 @@ import { BoardHeader } from "./BoardHeader";
 import { ExportDialog } from "./ExportDialog";
 import { NameGate } from "./NameGate";
 import { Cursors } from "./Presence";
-import { TimerPanel } from "./TimerPanel";
 import { Shimmer } from "./ui";
 import { useBoard } from "@/lib/useBoard";
 import { participantHeaders, useParticipant } from "@/lib/useParticipant";
@@ -92,6 +91,10 @@ export function BoardView({
         participantName={participant.name}
         participant={participant}
         peers={peers}
+        timerSeconds={state.board.timerSeconds}
+        timerEndsAt={state.board.timerEndsAt}
+        onTimerSeconds={(timerSeconds: number) => patchBoard({ timerSeconds })}
+        onTimerRun={(timerRunning: boolean) => patchBoard({ timerRunning })}
         onRename={(title) => patchBoard({ title })}
         onPhase={(phase: Phase) => patchBoard({ phase })}
         onMask={(masked) => patchBoard({ masked })}
@@ -163,13 +166,6 @@ export function BoardView({
         </div>
 
         <aside className="flex w-full shrink-0 flex-col gap-4 lg:sticky lg:top-[4.5rem] lg:w-[21rem] xl:w-[23rem]">
-          <TimerPanel
-            seconds={state.board.timerSeconds}
-            endsAt={state.board.timerEndsAt}
-            onSetSeconds={(timerSeconds) => patchBoard({ timerSeconds })}
-            onRun={(timerRunning) => patchBoard({ timerRunning })}
-          />
-
           {/* Hidden entirely without a key, rather than shown as a dead panel. */}
           {aiEnabled && (
             <AiPanel

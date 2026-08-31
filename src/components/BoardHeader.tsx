@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button, cx } from "./ui";
 import { PresenceBar } from "./Presence";
 import { ThemeToggle } from "./ThemeToggle";
+import { Timer } from "./Timer";
 import { PHASES, type Board, type Peer, type Phase } from "@/lib/types";
 import type { Participant } from "@/lib/useParticipant";
 
@@ -21,6 +22,10 @@ export function BoardHeader({
   participantName,
   participant,
   peers,
+  timerSeconds,
+  timerEndsAt,
+  onTimerSeconds,
+  onTimerRun,
   onRename,
   onPhase,
   onMask,
@@ -32,6 +37,10 @@ export function BoardHeader({
   participantName: string;
   participant: Participant;
   peers: Peer[];
+  timerSeconds: number;
+  timerEndsAt: string | null;
+  onTimerSeconds: (seconds: number) => void;
+  onTimerRun: (running: boolean) => void;
   onRename: (title: string) => void;
   onPhase: (phase: Phase) => void;
   onMask: (masked: boolean) => void;
@@ -116,6 +125,13 @@ export function BoardHeader({
         </div>
 
         <div className="ml-auto flex items-center gap-2">
+          <Timer
+            seconds={timerSeconds}
+            endsAt={timerEndsAt}
+            onSetSeconds={onTimerSeconds}
+            onRun={onTimerRun}
+          />
+
           <PresenceBar self={participant} peers={peers} />
 
           {budget > 0 && (
