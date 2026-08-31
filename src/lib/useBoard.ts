@@ -15,17 +15,43 @@ type ApiError = { error: string; fix?: string };
  * without needing a websocket — which also means it works on serverless.
  */
 export function useBoard(boardId: string, participant: Participant | null) {
-  const [state, setState] = useState<BoardState | null>(null);
+  /**
+   * Tagged with the board it belongs to, so state from a previous board is
+   * never rendered under a new board's URL — see the note on versionRef.
+   */
+  const [loaded, setLoaded] = useState<{ boardId: string; data: BoardState } | null>(
+    null,
+  );
+  const state = loaded?.boardId === boardId ? loaded.data : null;
   const [error, setError] = useState<ApiError | null>(null);
   const [pending, setPending] = useState(false);
 
-  // Read inside the poll loop without making it a dependency.
-  const versionRef = useRef<number>(-1);
+  /**
+   * The last version seen, tagged with the board it belongs to.
+   *
+   * Navigating between two boards reuses this component, so a bare version
+   * would survive the change of id — and the next poll would ask the new
+   * board `?since=` the old board's version. Two boards that happen to share
+   * a version (two fresh ones are both at 0) answer `unchanged`, which would
+   * leave the previous board on screen under the new board's URL. Pairing the
+   * two means a stale version can be recognised and discarded.
+   */
+  const versionRef = useRef<{ boardId: string; version: number }>({
+    boardId,
+    version: -1,
+  });
 
   const refresh = useCallback(
     async (options?: { force?: boolean }) => {
       if (!participant) return;
-      const since = options?.force ? "" : `&since=${versionRef.current}`;
+
+      // First read after a board change is always a full one, and the
+      // previous board's error must not survive the move.
+      if (versionRef.current.boardId !== boardId) {
+        versionRef.current = { boardId, version: -1 };
+        setError(null);
+      }
+      const since = options?.force ? "" : `&since=${versionRef.current.version}`;
       const response = await fetch(
         `/api/boards/${boardId}?viewer=${encodeURIComponent(participant.id)}${since}`,
         { cache: "no-store" },
@@ -40,8 +66,8 @@ export function useBoard(boardId: string, participant: Participant | null) {
       setError(null);
       if (payload.unchanged) return;
 
-      versionRef.current = payload.board.version;
-      setState(payload as BoardState);
+      versionRef.current = { boardId, version: payload.board.version };
+      setLoaded({ boardId, data: payload as BoardState });
     },
     [boardId, participant],
   );
@@ -82,7 +108,13 @@ export function useBoard(boardId: string, participant: Participant | null) {
       init: RequestInit,
       optimistic?: (current: BoardState) => BoardState,
     ): Promise<boolean> => {
-      if (optimistic) setState((current) => (current ? optimistic(current) : current));
+      if (optimistic) {
+        setLoaded((current) =>
+          current?.boardId === boardId
+            ? { boardId, data: optimistic(current.data) }
+            : current,
+        );
+      }
 
       setPending(true);
       try {

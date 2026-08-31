@@ -82,14 +82,12 @@ export default async function TemplatePage(props: PageProps<"/templates/[slug]">
       </h1>
       <p className="mt-4 text-[15px] leading-relaxed text-mist-500">{guide.intro}</p>
 
-      <div className="mt-6">
+      <div className="mt-6" id="start">
         <StartTemplateButton
           template={guide.templateId}
-          label={`Start a ${guide.name} board →`}
+          defaultTitle={`${guide.name} retro`}
+          cta="Start board →"
         />
-        <p className="mt-2 text-[11px] text-mist-700">
-          Opens a board with these columns ready. No sign-up.
-        </p>
       </div>
 
       <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
@@ -198,9 +196,12 @@ export default async function TemplatePage(props: PageProps<"/templates/[slug]">
         <p className="mt-1.5 text-[13px] text-mist-500">
           Columns ready, link shareable, nothing to install.
         </p>
-        <div className="mt-4 flex justify-center">
-          <StartTemplateButton template={guide.templateId} label="Start a board →" />
-        </div>
+        <a
+          href="#start"
+          className="mt-4 inline-flex h-11 items-center rounded-lg bg-accent px-6 text-sm font-medium text-white transition-colors hover:bg-accent-soft"
+        >
+          Start a board →
+        </a>
         <p className="mt-3 text-[12px] text-mist-700">
           Need different columns?{" "}
           <Link href="/new" className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent">

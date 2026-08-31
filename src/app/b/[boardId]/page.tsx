@@ -35,5 +35,6 @@ export default async function BoardPage(props: PageProps<"/b/[boardId]">) {
   const { boardId } = await props.params;
   if ((await getBoardVersion(boardId)) === null) notFound();
 
-  return <BoardView boardId={boardId} aiEnabled={isAiConfigured()} />;
+  // Keyed so a move between boards remounts rather than reusing state.
+  return <BoardView key={boardId} boardId={boardId} aiEnabled={isAiConfigured()} />;
 }
