@@ -176,7 +176,14 @@ export default function Home() {
       </div>
 
       <p className="mt-3 text-[12px] text-mist-700">
-        Need different columns?{" "}
+        Browse{" "}
+        <Link
+          href="/templates"
+          className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
+        >
+          retrospective templates
+        </Link>
+        , need different columns?{" "}
         <Link
           href="/new"
           className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"

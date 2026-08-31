@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteUrl } from "@/lib/site";
+import { TEMPLATE_GUIDES } from "@/lib/templateContent";
 
 /** Public pages only: board URLs are private and intentionally unlisted. */
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -13,6 +14,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${base}/templates`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...TEMPLATE_GUIDES.map((guide) => ({
+      url: `${base}/templates/${guide.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     {
       url: `${base}/new`,
       lastModified: now,
