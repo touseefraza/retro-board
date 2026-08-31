@@ -44,7 +44,7 @@ export default function NewBoardPage() {
       </h1>
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-mist-500">
         Start from a format or a blank board, then set it up however your retro
-        works — as many columns as you need, named and coloured your way, with
+        works: as many columns as you need, named and coloured your way, with
         the actions section renamed to whatever your team calls it.
       </p>
 

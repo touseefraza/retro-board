@@ -24,7 +24,7 @@ export function SetupNotice({
     {
       env: "ANTHROPIC_API_KEY",
       what: "Claude API key",
-      how: "Grab one from console.anthropic.com. Without it the board still works — the four AI passes are simply disabled.",
+      how: "Grab one from console.anthropic.com. Without it the board still works. The four AI passes are simply disabled.",
       done: hasAi,
     },
   ];

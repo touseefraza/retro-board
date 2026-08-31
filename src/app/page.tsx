@@ -14,7 +14,7 @@ const AI_FEATURES = [
   },
   {
     title: "Draft actions",
-    body: "Concrete, sprint-sized action items pulled from the highest-voted pain — each one with the card it came from.",
+    body: "Concrete, sprint-sized action items pulled from the highest-voted pain, each one with the card it came from.",
   },
   {
     title: "Unstick the room",
@@ -49,7 +49,7 @@ const BOARD_FEATURES = [
 /** What the board actually does — the list people scan before trying it. */
 const CAPABILITIES = [
   { title: "No sign-up", body: "No accounts, for you or anyone you invite. Open a board, share the link, start writing." },
-  { title: "Four formats, or your own", body: "Start/Stop/Continue, Mad/Sad/Glad, the four Ls and Sailboat — or build a board with your own columns." },
+  { title: "Four formats, or your own", body: "Start/Stop/Continue, Mad/Sad/Glad, the four Ls and Sailboat, or build a board with your own columns." },
   { title: "Live cursors", body: "See where everyone is on the board and what they add, as they add it." },
   { title: "Hide until reveal", body: "Keep cards private while people write, so nobody anchors on the first opinion in the room." },
   { title: "Dot voting", body: "A fixed budget per person puts the discussion where the team's attention actually is." },
@@ -81,7 +81,7 @@ const FAQ = [
   },
   {
     q: "Who can see my board?",
-    a: "Anyone with the link — boards are unguessable URLs with no password. They are deliberately kept out of search engines, but treat the link as the key and share it accordingly.",
+    a: "Anyone with the link. Boards are unguessable URLs with no password. They are deliberately kept out of search engines, but treat the link as the key and share it accordingly.",
   },
   {
     q: "How many people can be on one board?",
@@ -168,7 +168,7 @@ export default function Home() {
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-mist-500">
         {hasAi
           ? "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards. When the wall of stickies gets messy, Claude groups them, finds the actions, and writes the read-out."
-          : "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards — everyone sees the same wall, and each other's cursors, as it fills up."}
+          : "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards. Everyone sees the same wall, and each other's cursors, as it fills up."}
       </p>
 
       <div className="mt-8">
@@ -190,7 +190,7 @@ export default function Home() {
         >
           Build a custom board
         </Link>{" "}
-        — or read{" "}
+        , or read{" "}
         <Link
           href="/how-to-run-a-retrospective"
           className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"

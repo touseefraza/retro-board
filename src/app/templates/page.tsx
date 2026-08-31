@@ -20,7 +20,7 @@ export default function TemplatesIndex() {
         Retrospective templates
       </h1>
       <p className="mt-4 text-[15px] leading-relaxed text-mist-500">
-        The format decides what the team notices. Four that cover most retros —
+        The format decides what the team notices. Four that cover most retros:
         what each one surfaces, when to reach for it, and a board ready to run.
       </p>
 
@@ -55,7 +55,7 @@ export default function TemplatesIndex() {
       <div className="surface mt-8 rounded-2xl p-5">
         <p className="text-[15px] font-semibold text-mist-100">None of these fit?</p>
         <p className="mt-1.5 text-[13px] leading-relaxed text-mist-500">
-          Build a board with your own columns — up to eight, named and coloured
+          Build a board with your own columns, up to eight, named and coloured
           however your team works.
         </p>
         <Link

@@ -21,4 +21,4 @@ export const SITE_TAGLINE =
   "Free online retrospective board for agile teams, no sign-up";
 
 export const SITE_DESCRIPTION =
-  "A free online retro board for sprint retrospectives. Create a retrospective board, share the link, and run the retro together — live cursors, voting, action items, and export to Confluence. No sign-up, no setup.";
+  "A free online retro board for sprint retrospectives. Create a retrospective board, share the link, and run the retro together: live cursors, voting, action items, and export to Confluence. No sign-up, no setup.";

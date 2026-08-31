@@ -26,7 +26,7 @@ const FORMATS: { id: ExportFormat; label: string; hint: string }[] = [
   {
     id: "text",
     label: "Plain text",
-    hint: "Readable as-is — for a message, an email, or a commit body.",
+    hint: "Readable as-is, for a message, an email, or a commit body.",
   },
 ];
 

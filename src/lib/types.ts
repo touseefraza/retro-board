@@ -144,7 +144,7 @@ export const TEMPLATES: Record<
   },
   sailboat: {
     name: "Sailboat",
-    blurb: "Wind, anchors, rocks, island — good for strategy retros.",
+    blurb: "Wind, anchors, rocks, island. Good for strategy retros.",
     columns: [
       { title: "Wind", tone: "positive" },
       { title: "Anchors", tone: "negative" },

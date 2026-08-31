@@ -44,13 +44,13 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
     description:
       "The Start Stop Continue retrospective template explained: what goes in each column, prompts to read out, when to use it, and how to run one in 45 minutes. Free board, no sign-up.",
     intro:
-      "Start / Stop / Continue is the format most teams learn first, and the one most teams come back to. It asks for behaviour rather than feeling, and every card is already shaped like a decision — which is why it produces actions more reliably than any other format.",
+      "Start / Stop / Continue is the format most teams learn first, and the one most teams come back to. It asks for behaviour rather than feeling, and every card is already shaped like a decision, which is why it produces actions more reliably than any other format.",
     origin:
       "It comes out of the same lineage as Agile Retrospectives (Derby and Larsen, 2006), and survives because the three questions map cleanly onto what a team can control: things it isn't doing, things it is doing badly, and things worth protecting.",
     bestFor: [
       "A team new to retrospectives that needs an obvious structure",
       "Sprints where the goal is concrete process change",
-      "Short retros — 45 minutes is comfortable",
+      "Short retros, where 45 minutes is comfortable",
       "Teams that drift into venting and need the format to pull them back",
     ],
     avoid:
@@ -75,18 +75,18 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
         tone: "positive",
         what: "Things working that would quietly stop if nobody named them. Easy to skip and worth protecting.",
         prompt: "What worked that we should make sure survives?",
-        example: "Continue the Friday demo — it caught two regressions",
+        example: "Continue the Friday demo, which caught two regressions",
       },
     ],
     running: [
       { time: "5 min", step: "Set the stage and say what period the retro covers." },
       { time: "10 min", step: "Everyone writes into all three columns, silently, with cards hidden." },
       { time: "10 min", step: "Reveal, read out, group the cards that are really the same card." },
-      { time: "5 min", step: "Vote — three dots each is usually enough for three columns." },
+      { time: "5 min", step: "Vote. Three dots each is usually enough for three columns." },
       { time: "15 min", step: "Take the top two or three and turn them into owned actions." },
     ],
     tips: [
-      "Stop is the column that fills last and matters most. If it's empty, the room isn't safe yet — ask directly rather than moving on.",
+      "Stop is the column that fills last and matters most. If it's empty, the room isn't safe yet. Ask directly rather than moving on.",
       "Continue is not a participation trophy. A team that stops naming what works loses those practices to the next reorganisation.",
       "Cap Start at two actions per sprint. A team that agrees to start six things starts none of them.",
     ],
@@ -97,7 +97,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       },
       {
         q: "How long does a Start Stop Continue retro take?",
-        a: "About 45 minutes for a two-week sprint — 10 minutes writing, 10 grouping, 5 voting, and 15 on actions, with 5 minutes either side.",
+        a: "About 45 minutes for a two-week sprint: 10 minutes writing, 10 grouping, 5 voting, and 15 on actions, with 5 minutes either side.",
       },
       {
         q: "What's the difference between Stop and Start?",
@@ -135,7 +135,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       {
         title: "Sad",
         tone: "neutral",
-        what: "Disappointments rather than frustrations — things that fell short, got dropped, or didn't land.",
+        what: "Disappointments rather than frustrations: things that fell short, got dropped, or didn't land.",
         prompt: "What disappointed you, even if nobody's at fault?",
         example: "Sad we cut the accessibility work again",
       },
@@ -148,7 +148,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       },
     ],
     running: [
-      { time: "5 min", step: "Set the stage. Read the prime directive out loud — this format needs it." },
+      { time: "5 min", step: "Set the stage. Read the prime directive out loud. This format needs it." },
       { time: "10 min", step: "Silent writing, cards hidden. Emotional cards especially shouldn't be anchored." },
       { time: "15 min", step: "Reveal and read out. Give each card a moment; don't rush to solutions." },
       { time: "5 min", step: "Vote on what the team wants to change." },
@@ -182,7 +182,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
     description:
       "The 4 Ls retrospective template explained: Liked, Learned, Lacked and Longed for, what belongs in each, and when this format beats a sprint retro. Best for end of milestone. Free board, no sign-up.",
     intro:
-      "The four Ls — Liked, Learned, Lacked, Longed for — is the format to reach for when the period under review is longer than a sprint. Its two middle columns are what make it: Learned captures knowledge the team gained, and Lacked names what was missing, which is usually more actionable than what went wrong.",
+      "The four Ls (Liked, Learned, Lacked, Longed for) is the format to reach for when the period under review is longer than a sprint. Its two middle columns are what make it: Learned captures knowledge the team gained, and Lacked names what was missing, which is usually more actionable than what went wrong.",
     origin:
       "Attributed to Mary Gorman and Ellen Gottesdiener, the four Ls were designed for reflection across a release or project rather than a two-week iteration.",
     bestFor: [
@@ -197,7 +197,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       {
         title: "Liked",
         tone: "positive",
-        what: "What the team enjoyed or valued — practices, decisions, moments worth keeping.",
+        what: "What the team enjoyed or valued: practices, decisions, moments worth keeping.",
         prompt: "What did you like about how this went?",
         example: "Liked how early we got a working prototype in front of users",
       },
@@ -211,7 +211,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       {
         title: "Lacked",
         tone: "negative",
-        what: "What was missing — information, tools, time, access, clarity. Absences, not mistakes.",
+        what: "What was missing: information, tools, time, access, clarity. Absences, not mistakes.",
         prompt: "What did you need and not have?",
         example: "Lacked a staging database with realistic data volume",
       },
@@ -224,7 +224,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       },
     ],
     running: [
-      { time: "5 min", step: "Set the stage and name the period — a release, not a sprint." },
+      { time: "5 min", step: "Set the stage and name the period: a release, not a sprint." },
       { time: "15 min", step: "Silent writing across four columns. Four needs more time than three." },
       { time: "15 min", step: "Reveal and group. Learned cards often deserve writing down somewhere permanent." },
       { time: "5 min", step: "Vote, with four or five dots each given the extra column." },
@@ -233,7 +233,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
     tips: [
       "Learned is the column teams skip and regret. Copy those cards into your documentation before the board is forgotten.",
       "Lacked usually converts to actions more cleanly than a 'what went wrong' column, because an absence names its own fix.",
-      "Longed for is not wasted time even when nothing is actionable — it tells a manager what the team can't fix alone.",
+      "Longed for is not wasted time even when nothing is actionable. It tells a manager what the team can't fix alone.",
     ],
     faq: [
       {
@@ -242,11 +242,11 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       },
       {
         q: "When should you use a 4 Ls retrospective?",
-        a: "At the end of a milestone, release, quarter or project — anywhere the period is long enough that the team genuinely learned something. It's too broad for a routine sprint.",
+        a: "At the end of a milestone, release, quarter or project, anywhere the period is long enough that the team genuinely learned something. It's too broad for a routine sprint.",
       },
       {
         q: "What's the difference between Lacked and Longed for?",
-        a: "Lacked is something the team needed and could plausibly have had — a tool, data, access. Longed for is a wish that's usually outside the team's control, which makes it a signal to escalate rather than an action.",
+        a: "Lacked is something the team needed and could plausibly have had: a tool, data, access. Longed for is a wish that's usually outside the team's control, which makes it a signal to escalate rather than an action.",
       },
     ],
   },
@@ -273,7 +273,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       {
         title: "Wind",
         tone: "positive",
-        what: "What's pushing the team forward — momentum, help, tooling, anything making the work easier.",
+        what: "What's pushing the team forward: momentum, help, tooling, anything making the work easier.",
         prompt: "What's carrying us along?",
         example: "Wind: the new CI pipeline cut review turnaround in half",
       },
@@ -294,13 +294,13 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       {
         title: "Island",
         tone: "idea",
-        what: "Where the team is trying to get to. Write it first — everything else is relative to it.",
+        what: "Where the team is trying to get to. Write it first. Everything else is relative to it.",
         prompt: "What are we actually aiming at?",
         example: "Island: ship self-serve onboarding by end of quarter",
       },
     ],
     running: [
-      { time: "5 min", step: "Set the stage and draw the metaphor — boat, island, wind, anchors, rocks." },
+      { time: "5 min", step: "Set the stage and draw the metaphor: boat, island, wind, anchors, rocks." },
       { time: "5 min", step: "Fill the island first, together. If the team disagrees here, that's the retro." },
       { time: "10 min", step: "Silent writing into wind, anchors and rocks." },
       { time: "10 min", step: "Reveal and group." },
@@ -318,7 +318,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       },
       {
         q: "What's the difference between anchors and rocks?",
-        a: "Anchors are slowing you down now. Rocks are hazards that haven't hit yet. Keeping them separate is the point of the format — most retro formats have nowhere to put a future risk.",
+        a: "Anchors are slowing you down now. Rocks are hazards that haven't hit yet. Keeping them separate is the point of the format. Most retro formats have nowhere to put a future risk.",
       },
       {
         q: "When should you run a sailboat retrospective?",

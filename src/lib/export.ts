@@ -146,7 +146,7 @@ function suffixHtml(card: Card, options: ExportOptions): string {
   if (options.votes && card.votes > 0) {
     parts.push(`${card.votes} ${card.votes === 1 ? "vote" : "votes"}`);
   }
-  return parts.length ? ` &mdash; ${parts.join(", ")}` : "";
+  return parts.length ? ` (${parts.join(", ")})` : "";
 }
 
 /* -------------------------------------------------------------------------
@@ -215,7 +215,7 @@ function plain(state: BoardState, options: ExportOptions): string {
       out.push("  (none)", "");
     } else {
       for (const item of items) {
-        const owner = item.owner ? ` — ${item.owner}` : "";
+        const owner = item.owner ? ` (${item.owner})` : "";
         out.push(`  [${item.done ? "x" : " "}] ${oneLine(item.text)}${owner}`);
       }
       out.push("");
@@ -249,5 +249,5 @@ function suffixText(card: Card, options: ExportOptions, md: boolean): string {
   if (options.votes && card.votes > 0) {
     parts.push(`${card.votes} ${card.votes === 1 ? "vote" : "votes"}`);
   }
-  return parts.length ? ` — ${parts.join(", ")}` : "";
+  return parts.length ? ` (${parts.join(", ")})` : "";
 }

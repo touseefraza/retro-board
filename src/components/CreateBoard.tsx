@@ -123,7 +123,7 @@ export function CreateBoard() {
           ? "Give the board a name to start."
           : name.trim()
             ? "No sign-up. The board lives at a private link you can share."
-            : `No sign-up. You'll join as ${VISITOR_NAME} — add a name any time.`}
+            : `No sign-up. You'll join as ${VISITOR_NAME}. Add a name any time.`}
       </p>
     </div>
   );

@@ -15,7 +15,7 @@ const PHASES = [
   {
     time: "5 min",
     title: "Set the stage",
-    body: "Say what the retro covers and how long it runs. Read the prime directive out loud if the team is new to it — everyone did the best they could with what they knew at the time. This is not ceremony: it is what makes it safe to say the difficult thing twenty minutes later.",
+    body: "Say what the retro covers and how long it runs. Read the prime directive out loud if the team is new to it: everyone did the best they could with what they knew at the time. This is not ceremony: it is what makes it safe to say the difficult thing twenty minutes later.",
   },
   {
     time: "10–15 min",
@@ -25,7 +25,7 @@ const PHASES = [
   {
     time: "10 min",
     title: "Generate insight",
-    body: "Reveal, read out, and group related cards into themes. You are looking for the pattern under the individual complaints — four cards about waiting is one card about handoffs. Then vote, with a fixed budget per person, so the discussion goes where the team's attention actually is rather than where the argument is loudest.",
+    body: "Reveal, read out, and group related cards into themes. You are looking for the pattern under the individual complaints: four cards about waiting is one card about handoffs. Then vote, with a fixed budget per person, so the discussion goes where the team's attention actually is rather than where the argument is loudest.",
   },
   {
     time: "15 min",
@@ -35,7 +35,7 @@ const PHASES = [
   {
     time: "5 min",
     title: "Close",
-    body: "Read the actions back, confirm the owners, and say where the notes will live. Then actually put them there — a retro whose output never leaves the tool teaches the team that retros do not matter.",
+    body: "Read the actions back, confirm the owners, and say where the notes will live. Then actually put them there. A retro whose output never leaves the tool teaches the team that retros do not matter.",
   },
 ];
 
@@ -54,7 +54,7 @@ const MISTAKES = [
   },
   {
     title: "Same format every time",
-    body: "Teams stop seeing what the columns stop asking about. Rotating the format — a sailboat retro after a quarter of Start/Stop/Continue — surfaces different material from the same people.",
+    body: "Teams stop seeing what the columns stop asking about. Rotating the format, say a sailboat retro after a quarter of Start/Stop/Continue, surfaces different material from the same people.",
   },
   {
     title: "Too many people",
@@ -73,7 +73,7 @@ const FAQ = [
   },
   {
     q: "What if nobody says anything?",
-    a: "Silence usually means it is not safe, or the question is too broad. Switch to silent writing before discussion, and ask a narrower question — not \"how did the sprint go\" but \"what took longer than you expected\".",
+    a: "Silence usually means it is not safe, or the question is too broad. Switch to silent writing before discussion, and ask a narrower question: not \"how did the sprint go\" but \"what took longer than you expected\".",
   },
   {
     q: "Should retrospectives be anonymous?",
