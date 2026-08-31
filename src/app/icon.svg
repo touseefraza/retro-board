@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Retro Board">
+  <defs>
+    <linearGradient id="rb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9a8bff"/>
+      <stop offset="1" stop-color="#6248e8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="15" fill="url(#rb)"/>
+
+  <!-- The board behind the monogram: three columns, tallest first, echoing
+       the mark in the app header. Low contrast so it reads as texture at
+       16px and as a board at 64px. -->
+  <g fill="#ffffff" opacity="0.18">
+    <rect x="10" y="10" width="9" height="18" rx="2.5"/>
+    <rect x="22" y="10" width="14" height="11" rx="2.5"/>
+    <rect x="39" y="10" width="15" height="15" rx="2.5"/>
+  </g>
+
+  <text
+    x="32" y="52"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+    font-size="30"
+    font-weight="700"
+    letter-spacing="-1.5"
+    fill="#ffffff"
+  >RB</text>
+</svg>
