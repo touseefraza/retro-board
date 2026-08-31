@@ -77,10 +77,15 @@ export function Timer({
     onRun(!endsAt);
   };
 
+  // How much of the run is left, for the progress rail.
+  const fraction = running && seconds > 0 ? Math.max(0, Math.min(1, remaining / seconds)) : 0;
+  // The rail warms toward red over the last fifth.
+  const low = running && fraction <= 0.2;
+
   return (
     <div
       className={cx(
-        "flex shrink-0 items-center gap-0.5 rounded-lg border px-1 py-1 transition-colors",
+        "relative flex shrink-0 items-center gap-1 overflow-hidden rounded-xl border pl-1 pr-1 transition-colors",
         finished
           ? "border-tone-negative/50 bg-tone-negative/10"
           : running
@@ -90,22 +95,26 @@ export function Timer({
       title={finished ? "Time's up" : running ? "Timer running" : "Countdown timer"}
     >
       {!endsAt && (
-        <button
-          type="button"
-          aria-label="Less time"
+        <Step
+          label="Less time"
           disabled={seconds <= TIMER_LIMITS.min}
           onClick={() => adjust(-1)}
-          className="flex h-6 w-5 items-center justify-center rounded text-mist-500 transition-colors hover:bg-fill-2 hover:text-mist-100 disabled:opacity-30"
         >
-          −
-        </button>
+          <path d="M4 8h8" />
+        </Step>
       )}
 
       <span
         aria-live={finished ? "assertive" : "off"}
         className={cx(
-          "min-w-[2.6rem] px-0.5 text-center font-mono text-[13px] tabular-nums",
-          finished ? "text-tone-negative" : running ? "text-mist-100" : "text-mist-300",
+          "min-w-[3.4rem] px-1 text-center font-mono text-[17px] font-semibold leading-none tabular-nums tracking-tight",
+          finished
+            ? "text-tone-negative"
+            : low
+              ? "text-tone-idea"
+              : running
+                ? "text-mist-100"
+                : "text-mist-300",
           finished && "animate-pulse",
         )}
       >
@@ -113,15 +122,13 @@ export function Timer({
       </span>
 
       {!endsAt && (
-        <button
-          type="button"
-          aria-label="More time"
+        <Step
+          label="More time"
           disabled={seconds >= TIMER_LIMITS.max}
           onClick={() => adjust(1)}
-          className="flex h-6 w-5 items-center justify-center rounded text-mist-500 transition-colors hover:bg-fill-2 hover:text-mist-100 disabled:opacity-30"
         >
-          +
-        </button>
+          <path d="M8 4v8M4 8h8" />
+        </Step>
       )}
 
       <button
@@ -129,16 +136,76 @@ export function Timer({
         onClick={toggle}
         aria-label={finished ? "Reset timer" : endsAt ? "Stop timer" : "Start timer"}
         className={cx(
-          "ml-0.5 flex h-6 items-center justify-center rounded px-2 text-[11px] font-semibold transition-colors",
+          "ml-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors",
           finished
             ? "bg-tone-negative text-ink-fixed hover:opacity-90"
             : endsAt
-              ? "text-mist-300 hover:bg-fill-2"
+              ? "bg-fill-2 text-mist-300 hover:bg-fill-3 hover:text-mist-100"
               : "bg-accent text-white hover:bg-accent-soft",
         )}
       >
-        {finished ? "Reset" : endsAt ? "Stop" : "Start"}
+        {finished ? (
+          <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+            <path d="M13 8a5 5 0 1 1-1.6-3.7" />
+            <path d="M13 2.5V5h-2.5" />
+          </svg>
+        ) : endsAt ? (
+          <svg viewBox="0 0 16 16" className="h-3 w-3" fill="currentColor" aria-hidden="true">
+            <rect x="3.5" y="3.5" width="9" height="9" rx="1.6" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+            <path d="M5 3.6c0-.5.5-.8.9-.5l6 4.4c.4.3.4.8 0 1l-6 4.4c-.4.3-.9 0-.9-.5z" />
+          </svg>
+        )}
       </button>
+
+      {/* A rail rather than a number: elapsed time is glanceable, not read. */}
+      {running && (
+        <span
+          aria-hidden="true"
+          style={{ transform: `scaleX(${fraction})` }}
+          className={cx(
+            "absolute inset-x-0 bottom-0 h-[2px] origin-left transition-transform duration-300 ease-linear",
+            low ? "bg-tone-idea" : "bg-accent",
+          )}
+        />
+      )}
     </div>
+  );
+}
+
+/** A round step button for the minute controls. */
+function Step({
+  label,
+  disabled,
+  onClick,
+  children,
+}: {
+  label: string;
+  disabled: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className="flex h-7 w-6 items-center justify-center rounded-lg text-mist-500 transition-colors hover:bg-fill-2 hover:text-mist-100 disabled:opacity-25"
+    >
+      <svg
+        viewBox="0 0 16 16"
+        className="h-3.5 w-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        aria-hidden="true"
+      >
+        {children}
+      </svg>
+    </button>
   );
 }
