@@ -102,7 +102,7 @@ export function CreateBoard() {
             onKeyDown={(event) => event.key === "Enter" && create()}
             aria-label="Your name"
             maxLength={60}
-            className="h-11 flex-1 rounded-xl border border-line bg-fill-1 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
+            className="h-11 w-full sm:flex-1 rounded-xl border border-line bg-fill-1 px-3.5 text-sm text-mist-100 placeholder:text-mist-700 outline-none transition-colors focus:border-accent/50"
           />
           <Button
             variant="primary"

@@ -75,7 +75,7 @@ export function StartTemplateButton({
             aria-label="Your name"
             onChange={(event) => setNameDraft(event.target.value)}
             onKeyDown={(event) => event.key === "Enter" && start()}
-            className={cx(inputClass, "flex-1")}
+            className={cx(inputClass, "sm:flex-1")}
           />
           <Button
             variant="primary"
