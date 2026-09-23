@@ -29,16 +29,6 @@ export function generateMetadata(): Metadata {
     },
     description,
     applicationName: SITE_NAME,
-    keywords: [
-      "retro board",
-      "retrospective board",
-      "sprint retrospective",
-      "agile retrospective",
-      "online retro tool",
-      "team retrospective",
-      "free retro board",
-      "scrum retrospective",
-    ],
     alternates: { canonical: "/" },
     openGraph: openGraphFor({
       title: `${SITE_NAME} | ${SITE_TAGLINE}`,
