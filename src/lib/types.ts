@@ -142,6 +142,16 @@ export const TEMPLATES: Record<
       { title: "Longed for", tone: "neutral" },
     ],
   },
+  good_bad_start_stop: {
+    name: "Good / Bad / Start / Stop",
+    blurb: "Separates what happened from what to do about it.",
+    columns: [
+      { title: "Good", tone: "positive" },
+      { title: "Bad", tone: "negative" },
+      { title: "Start", tone: "idea" },
+      { title: "Stop", tone: "neutral" },
+    ],
+  },
   sailboat: {
     name: "Sailboat",
     blurb: "Wind, anchors, rocks, island. Good for strategy retros.",

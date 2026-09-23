@@ -54,7 +54,7 @@ export type TemplateGuide = {
   faq: { q: string; a: string }[];
   walkthrough: TemplateWalkthrough;
   /** Named reshapings of the format, including the ones people search for. */
-  variations: { name: string; body: string }[];
+  variations: { name: string; body: string; slug?: string }[];
   /** When to reach for a different format, pointing at the guide for it. */
   insteadOf: { slug: string; when: string }[];
 };
@@ -155,6 +155,7 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
     variations: [
       {
         name: "Good / Bad / Start / Stop",
+        slug: "good-bad-start-stop",
         body: "Splits the three columns into four: Good and Bad collect what happened, Start and Stop collect what to do about it. Worth using when people keep writing observations into Start, because it gives those cards somewhere to go. The cost is that the retro needs a grouping step between the two halves, so add ten minutes.",
       },
       {
@@ -200,6 +201,161 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       {
         q: "Can you use Start Stop Continue for an individual?",
         a: "Yes, and it is one of the better formats for a one to one or a personal review, because all three questions are about behaviour rather than outcome. Write it yourself first, then compare with the other person's version of the same three columns.",
+      },
+    ],
+  },
+  {
+    slug: "good-bad-start-stop",
+    templateId: "good_bad_start_stop",
+    name: "Good / Bad / Start / Stop",
+    title: "Good Bad Start Stop retrospective template",
+    description:
+      "The Good Bad Start Stop retrospective template explained: why splitting observations from decisions gets more out of a quiet team, what belongs in each of the four columns, and how to run one in an hour. Free board, no sign-up.",
+    intro:
+      "Good / Bad / Start / Stop does one thing the three column formats cannot: it separates noticing from deciding. Good and Bad collect what actually happened. Start and Stop collect what the team intends to do about it. Teams reach for this the moment they realise their Start column has quietly filled up with complaints.",
+    origin:
+      "It has no single author. It is what Start / Stop / Continue turns into when a team keeps writing observations where actions should go, and it has been rediscovered independently by enough teams that most people meet it without ever being taught it.",
+    bestFor: [
+      "Teams whose Start column keeps filling with things that are really complaints",
+      "Rooms where people want to say what happened before being asked to fix it",
+      "Sprints with an obvious event in them: an incident, a launch, a deadline missed",
+      "Mixed groups where not everyone has the standing to propose a process change",
+    ],
+    avoid:
+      "Skip it when the team is practised and time is short. The extra column and the grouping step between the halves cost about ten minutes, and a team that already writes decisions straight into Start gets nothing back for them. Use Start / Stop / Continue instead.",
+    columns: [
+      {
+        title: "Good",
+        tone: "positive",
+        what: "What happened that was worth it. Observations, not proposals: this column is a record of the sprint, not a plan.",
+        prompt: "What went well, whether or not we did it on purpose?",
+        example: "Good: the release went out on Tuesday with no rollback",
+      },
+      {
+        title: "Bad",
+        tone: "negative",
+        what: "What happened that hurt. The column that earns the format, because nothing here has to be anyone's suggestion yet.",
+        prompt: "What went badly, even if you don't know what to do about it?",
+        example: "Bad: we found out the schema had changed by breaking in production",
+      },
+      {
+        title: "Start",
+        tone: "idea",
+        what: "Decisions. Things the team will begin doing, drawn from what the first two columns turned up.",
+        prompt: "Given all that, what should we begin doing?",
+        example: "Start announcing schema changes in the channel before merging",
+      },
+      {
+        title: "Stop",
+        tone: "neutral",
+        what: "The other half of the decision. Things the team will stop doing, for the same reasons.",
+        prompt: "Given all that, what should we stop?",
+        example: "Stop approving migrations without a named reviewer",
+      },
+    ],
+    running: [
+      { time: "5 min", step: "Set the stage. Say that the first two columns are for observations only." },
+      { time: "10 min", step: "Silent writing into Good and Bad, cards hidden. Nothing goes in Start or Stop yet." },
+      { time: "10 min", step: "Reveal Good and Bad, read out, and group the cards that are really one card." },
+      { time: "10 min", step: "Now open Start and Stop, and write against the themes on the board." },
+      { time: "5 min", step: "Vote on the Start and Stop cards rather than the observations." },
+      { time: "15 min", step: "Turn the top two or three into actions with owners." },
+    ],
+    tips: [
+      "Hold the line on the first ten minutes. The whole value of the format is that nobody has to have a solution ready before they are allowed to say what happened.",
+      "Vote on the decisions, not the observations. Voting on Bad cards just ranks the team's misery and leaves you no closer to an action.",
+      "If Start and Stop fill up faster than Good and Bad, the team did not need this format. Run Start / Stop / Continue next time and save ten minutes.",
+      "A Bad card with no matching Start or Stop card is not a failure. Some things are worth recording and outside the team's reach, and pretending otherwise produces actions nobody does.",
+    ],
+    faq: [
+      {
+        q: "What is the Good Bad Start Stop retrospective?",
+        a: "A four column retrospective that splits the session in two. Good and Bad gather what happened during the sprint, then Start and Stop gather what the team will do differently. The first pair is observation, the second pair is decision, and keeping them apart is the point.",
+      },
+      {
+        q: "Is Good Bad Start Stop the same as Start Stop Continue?",
+        a: "No. Start / Stop / Continue asks for decisions in all three columns and keeps a place for protecting what already works. Good / Bad / Start / Stop gives observations a home of their own but drops the Continue column, so nothing on the board argues for keeping a practice that is working.",
+      },
+      {
+        q: "How long does a Good Bad Start Stop retro take?",
+        a: "About an hour for a two week sprint, which is ten minutes longer than the three column formats. The extra time goes on grouping Good and Bad before the team is allowed to write in Start and Stop.",
+      },
+      {
+        q: "Should people write in all four columns at once?",
+        a: "No, and that is the one rule worth enforcing. Opening all four at the start collapses the format back into Start / Stop / Continue with a spare column, because people write the solution they arrived with instead of the thing they noticed.",
+      },
+      {
+        q: "What if the Bad column is much longer than the Good one?",
+        a: "That is normal and not by itself a problem: bad things are more memorable and easier to name. It is worth worrying about when it happens every sprint, which usually means the team has no habit of noticing what works and will lose those practices without noticing either.",
+      },
+    ],
+    walkthrough: {
+      scenario:
+        "A four person team in the sprint after a schema change took the search service down for an afternoon, running an hour.",
+      columns: [
+        {
+          title: "Good",
+          cards: [
+            "Good: the release went out on Tuesday with no rollback",
+            "Good: two people picked up the incident without being asked",
+            "Good: the new smoke tests caught the second bad deploy",
+          ],
+        },
+        {
+          title: "Bad",
+          cards: [
+            "Bad: we found out the schema had changed by breaking in production",
+            "Bad: the runbook was six months out of date when we opened it",
+            "Bad: nobody could say who owned the search service during the incident",
+          ],
+        },
+        {
+          title: "Start",
+          cards: [
+            "Start announcing schema changes in the channel before merging",
+            "Start putting a named owner on every service in the catalogue",
+          ],
+        },
+        {
+          title: "Stop",
+          cards: [
+            "Stop approving migrations without a named reviewer",
+            "Stop treating the runbook as documentation rather than part of the change",
+          ],
+        },
+      ],
+      themes: [
+        "All three Bad cards were one card: changes reaching production without the people downstream knowing, and nobody named to ask.",
+        "The Good column was mostly the safety net working. Worth noticing, because it is the only reason the afternoon was not a day.",
+      ],
+      actions: [
+        "Rae adds a required platform reviewer on migrations, this week.",
+        "Ola fills in the owner field for every service in the catalogue before the next retro, and the team reads the list out at it.",
+      ],
+    },
+    variations: [
+      {
+        name: "Good / Bad / Start / Stop / Continue",
+        slug: "start-stop-continue",
+        body: "Adds back the column this format drops. Worth it for a team that has lost a good practice recently, because Continue is the only column that argues for keeping something. The cost is five columns, which is about as wide as a retro can get before people stop reading each other's cards.",
+      },
+      {
+        name: "Plus / Delta",
+        body: "The same split with two columns instead of four: Plus for what worked, Delta for what to change. It fits a fifteen minute retro at the end of a workshop or a day of interviews, where the full format would be heavier than the material.",
+      },
+      {
+        name: "Written asynchronously first",
+        body: "Open Good and Bad a day early and let people fill them in as the sprint ends, then run the live session on Start and Stop only. It suits distributed teams and gets better observations, because people write them while they are still annoyed rather than a week later.",
+      },
+    ],
+    insteadOf: [
+      {
+        slug: "start-stop-continue",
+        when: "The team already writes decisions straight into Start and the extra ten minutes buys nothing.",
+      },
+      {
+        slug: "mad-sad-glad",
+        when: "The Bad column keeps filling with how the sprint felt rather than what happened in it.",
       },
     ],
   },
@@ -665,4 +821,11 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
 
 export function guideBySlug(slug: string): TemplateGuide | undefined {
   return TEMPLATE_GUIDES.find((guide) => guide.slug === slug);
+}
+
+/** The guide for a board template, where one has been written. */
+export function guideByTemplateId(
+  templateId: string,
+): TemplateGuide | undefined {
+  return TEMPLATE_GUIDES.find((guide) => guide.templateId === templateId);
 }
