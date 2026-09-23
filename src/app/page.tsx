@@ -1,4 +1,5 @@
 import { CreateBoard } from "@/components/CreateBoard";
+import { SiteFooter } from "@/components/SiteFooter";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SetupNotice } from "@/components/SetupNotice";
@@ -30,7 +31,7 @@ const AI_FEATURES = [
 const BOARD_FEATURES = [
   {
     title: "Pick a format",
-    body: "Start / Stop / Continue, Mad / Sad / Glad, the four Ls, or Sailboat. The columns are set up before you have finished reading this.",
+    body: "Start / Stop / Continue, Good / Bad / Start / Stop, Mad / Sad / Glad, the four Ls, or Sailboat. The columns are set up before you have finished reading this.",
   },
   {
     title: "Everyone at once",
@@ -49,7 +50,7 @@ const BOARD_FEATURES = [
 /** What the board actually does — the list people scan before trying it. */
 const CAPABILITIES = [
   { title: "No sign-up", body: "No accounts, for you or anyone you invite. Open a board, share the link, start writing." },
-  { title: "Four formats, or your own", body: "Start/Stop/Continue, Mad/Sad/Glad, the four Ls and Sailboat, or build a board with your own columns." },
+  { title: "Five formats, or your own", body: "Start/Stop/Continue, Good/Bad/Start/Stop, Mad/Sad/Glad, the four Ls and Sailboat, or build a board with your own columns." },
   { title: "Live cursors", body: "See where everyone is on the board and what they add, as they add it." },
   { title: "Hide until reveal", body: "Keep cards private while people write, so nobody anchors on the first opinion in the room." },
   { title: "Dot voting", body: "A fixed budget per person puts the discussion where the team's attention actually is." },
@@ -131,143 +132,146 @@ export default function Home() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-8 pb-20 sm:px-6 sm:pt-12 sm:pb-24">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+    <>
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pt-8 pb-12 sm:px-6 sm:pt-12 sm:pb-16">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
 
-      <div className="flex items-center gap-2.5">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/15 ring-1 ring-accent/30">
-          <svg viewBox="0 0 16 16" className="h-4 w-4 text-accent-soft" fill="currentColor" aria-hidden="true">
-            <rect x="2" y="2.5" width="4.5" height="7" rx="1.2" />
-            <rect x="8" y="2.5" width="6" height="4.5" rx="1.2" opacity=".55" />
-            <rect x="2" y="11" width="4.5" height="2.5" rx="1" opacity=".55" />
-            <rect x="8" y="8.5" width="6" height="5" rx="1.2" opacity=".3" />
-          </svg>
-        </span>
-        <span className="text-sm font-semibold tracking-tight text-mist-300">
-          Retro Board
-        </span>
+        <div className="flex items-center gap-2.5">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/15 ring-1 ring-accent/30">
+            <svg viewBox="0 0 16 16" className="h-4 w-4 text-accent-soft" fill="currentColor" aria-hidden="true">
+              <rect x="2" y="2.5" width="4.5" height="7" rx="1.2" />
+              <rect x="8" y="2.5" width="6" height="4.5" rx="1.2" opacity=".55" />
+              <rect x="2" y="11" width="4.5" height="2.5" rx="1" opacity=".55" />
+              <rect x="8" y="8.5" width="6" height="5" rx="1.2" opacity=".3" />
+            </svg>
+          </span>
+          <span className="text-sm font-semibold tracking-tight text-mist-300">
+            Retro Board
+          </span>
 
-        <ThemeToggle className="ml-auto" />
-      </div>
+          <ThemeToggle className="ml-auto" />
+        </div>
 
-      <h1 className="mt-10 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight text-mist-100 sm:text-6xl">
-        Run the retro.
-        <br />
-        <span className="bg-gradient-to-r from-accent-soft via-mist-100 to-tone-neutral bg-clip-text text-transparent">
-          {hasAi ? "Let Claude do the sorting." : "Everyone on the same board."}
-        </span>
-      </h1>
+        <h1 className="mt-10 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight text-mist-100 sm:text-6xl">
+          Run the retro.
+          <br />
+          <span className="bg-gradient-to-r from-accent-soft via-mist-100 to-tone-neutral bg-clip-text text-transparent">
+            {hasAi ? "Let Claude do the sorting." : "Everyone on the same board."}
+          </span>
+        </h1>
 
-      <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-mist-500">
-        {hasAi
-          ? "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards. When the wall of stickies gets messy, Claude groups them, finds the actions, and writes the read-out."
-          : "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards. Everyone sees the same wall, and each other's cursors, as it fills up."}
-      </p>
+        <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-mist-500">
+          {hasAi
+            ? "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards. When the wall of stickies gets messy, Claude groups them, finds the actions, and writes the read-out."
+            : "A retrospective board that is ready the moment you open it. Pick a format, share the link, write cards. Everyone sees the same wall, and each other's cursors, as it fills up."}
+        </p>
 
-      <div className="mt-8">
-        <CreateBoard />
-      </div>
+        <div className="mt-8">
+          <CreateBoard />
+        </div>
 
-      <p className="mt-3 text-[12px] text-mist-700">
-        Browse{" "}
-        <Link
-          href="/templates"
-          className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
-        >
-          retrospective templates
-        </Link>
-        , need different columns?{" "}
-        <Link
-          href="/new"
-          className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
-        >
-          Build a custom board
-        </Link>{" "}
-        , or read{" "}
-        <Link
-          href="/how-to-run-a-retrospective"
-          className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
-        >
-          how to run a retrospective
-        </Link>
-        .
-      </p>
+        <p className="mt-3 text-[12px] text-mist-700">
+          Browse{" "}
+          <Link
+            href="/templates"
+            className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
+          >
+            retrospective templates
+          </Link>
+          , need different columns?{" "}
+          <Link
+            href="/new"
+            className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
+          >
+            Build a custom board
+          </Link>{" "}
+          , or read{" "}
+          <Link
+            href="/how-to-run-a-retrospective"
+            className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
+          >
+            how to run a retrospective
+          </Link>
+          .
+        </p>
 
-      <section className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-fill-2 sm:grid-cols-2">
-        {features.map((feature) => (
-          <div key={feature.title} className="bg-ink-950/80 p-5">
-            <h2 className="text-[13px] font-semibold text-mist-100">{feature.title}</h2>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-mist-700">
-              {feature.body}
-            </p>
-          </div>
-        ))}
-      </section>
-
-      <section className="mt-14">
-        <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mist-500">
-          What you get
-        </h2>
-        <div className="mt-4 grid gap-px overflow-hidden rounded-2xl border border-line bg-fill-2 sm:grid-cols-2 lg:grid-cols-4">
-          {CAPABILITIES.map((item) => (
-            <div key={item.title} className="bg-ink-950/80 p-4">
-              <h3 className="text-[13px] font-semibold text-mist-100">{item.title}</h3>
-              <p className="mt-1.5 text-[12px] leading-relaxed text-mist-700">
-                {item.body}
+        <section className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-fill-2 sm:grid-cols-2">
+          {features.map((feature) => (
+            <div key={feature.title} className="bg-ink-950/80 p-5">
+              <h2 className="text-[13px] font-semibold text-mist-100">{feature.title}</h2>
+              <p className="mt-1.5 text-[13px] leading-relaxed text-mist-700">
+                {feature.body}
               </p>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section className="mt-14">
-        <h2 className="text-xl font-semibold tracking-tight text-mist-100">
-          Frequently asked questions
-        </h2>
-        <div className="mt-4 flex flex-col gap-2">
-          {FAQ.map((item) => (
-            <details key={item.q} className="surface group rounded-2xl p-4">
-              <summary className="cursor-pointer list-none text-[14px] font-semibold text-mist-100 marker:content-none">
-                <span className="mr-2 inline-block text-mist-700 transition-transform group-open:rotate-90">
-                  ›
-                </span>
-                {item.q}
-              </summary>
-              <p className="mt-2 pl-5 text-[13px] leading-relaxed text-mist-300">
-                {item.a}
-              </p>
-            </details>
-          ))}
-        </div>
-      </section>
-
-      {hasAi && (
-        <section className="mt-4 surface rounded-2xl p-5">
-          <h2 className="text-[13px] font-semibold text-mist-100">
-            Agents are first-class here
-          </h2>
-          <p className="mt-1.5 max-w-2xl text-[13px] leading-relaxed text-mist-700">
-            Every board is also an API. Point any MCP client at{" "}
-            <code className="font-mono text-mist-300">/api/mcp</code> and your agent can
-            create boards, post cards, vote, and run the same Claude passes the UI uses.
-            The full tool manifest and REST surface are described at{" "}
-            <a
-              href="/api/agent"
-              className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
-            >
-              /api/agent
-            </a>
-            .
-          </p>
         </section>
-      )}
-    </main>
+
+        <section className="mt-14">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mist-500">
+            What you get
+          </h2>
+          <div className="mt-4 grid gap-px overflow-hidden rounded-2xl border border-line bg-fill-2 sm:grid-cols-2 lg:grid-cols-4">
+            {CAPABILITIES.map((item) => (
+              <div key={item.title} className="bg-ink-950/80 p-4">
+                <h3 className="text-[13px] font-semibold text-mist-100">{item.title}</h3>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-mist-700">
+                  {item.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-14">
+          <h2 className="text-xl font-semibold tracking-tight text-mist-100">
+            Frequently asked questions
+          </h2>
+          <div className="mt-4 flex flex-col gap-2">
+            {FAQ.map((item) => (
+              <details key={item.q} className="surface group rounded-2xl p-4">
+                <summary className="cursor-pointer list-none text-[14px] font-semibold text-mist-100 marker:content-none">
+                  <span className="mr-2 inline-block text-mist-700 transition-transform group-open:rotate-90">
+                    ›
+                  </span>
+                  {item.q}
+                </summary>
+                <p className="mt-2 pl-5 text-[13px] leading-relaxed text-mist-300">
+                  {item.a}
+                </p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {hasAi && (
+          <section className="mt-4 surface rounded-2xl p-5">
+            <h2 className="text-[13px] font-semibold text-mist-100">
+              Agents are first-class here
+            </h2>
+            <p className="mt-1.5 max-w-2xl text-[13px] leading-relaxed text-mist-700">
+              Every board is also an API. Point any MCP client at{" "}
+              <code className="font-mono text-mist-300">/api/mcp</code> and your agent can
+              create boards, post cards, vote, and run the same Claude passes the UI uses.
+              The full tool manifest and REST surface are described at{" "}
+              <a
+                href="/api/agent"
+                className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
+              >
+                /api/agent
+              </a>
+              .
+            </p>
+          </section>
+        )}
+      </main>
+      <SiteFooter />
+    </>
   );
 }

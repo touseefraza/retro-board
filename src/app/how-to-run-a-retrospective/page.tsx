@@ -1,14 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SiteFooter } from "@/components/SiteFooter";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TEMPLATES } from "@/lib/types";
-import { siteUrl } from "@/lib/site";
+import { guideByTemplateId } from "@/lib/templateContent";
+import { openGraphFor, siteUrl } from "@/lib/site";
+
+const GUIDE_DESCRIPTION =
+  "A practical guide to running a sprint retrospective: the five phases, how long each takes, which format to pick, and the facilitation mistakes that quietly kill retros. With free templates you can start in one click.";
 
 export const metadata: Metadata = {
   title: "How to run a retrospective",
-  description:
-    "A practical guide to running a sprint retrospective: the five phases, how long each takes, which format to pick, and the facilitation mistakes that quietly kill retros. With free templates you can start in one click.",
+  description: GUIDE_DESCRIPTION,
   alternates: { canonical: "/how-to-run-a-retrospective" },
+  openGraph: openGraphFor({
+    title: "How to run a retrospective",
+    description: GUIDE_DESCRIPTION,
+    path: "/how-to-run-a-retrospective",
+    type: "article",
+  }),
 };
 
 const PHASES = [
@@ -113,138 +123,166 @@ export default function GuidePage() {
   };
 
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-4 pt-8 pb-20 sm:px-6 sm:pt-12 sm:pb-24">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+    <>
+      <main className="mx-auto w-full max-w-3xl flex-1 px-4 pt-8 pb-12 sm:px-6 sm:pt-12 sm:pb-16">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
 
-      <div className="flex items-center gap-2.5">
-        <Link
-          href="/"
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/15 ring-1 ring-accent/30"
-          aria-label="Retro Board home"
-        >
-          <svg viewBox="0 0 16 16" className="h-4 w-4 text-accent-soft" fill="currentColor" aria-hidden="true">
-            <rect x="2" y="2.5" width="4.5" height="7" rx="1.2" />
-            <rect x="8" y="2.5" width="6" height="4.5" rx="1.2" opacity=".55" />
-            <rect x="2" y="11" width="4.5" height="2.5" rx="1" opacity=".55" />
-            <rect x="8" y="8.5" width="6" height="5" rx="1.2" opacity=".3" />
-          </svg>
-        </Link>
-        <span className="text-sm font-semibold tracking-tight text-mist-300">
-          Retro Board
-        </span>
-        <ThemeToggle className="ml-auto" />
-      </div>
+        <div className="flex items-center gap-2.5">
+          <Link
+            href="/"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent/15 ring-1 ring-accent/30"
+            aria-label="Retro Board home"
+          >
+            <svg viewBox="0 0 16 16" className="h-4 w-4 text-accent-soft" fill="currentColor" aria-hidden="true">
+              <rect x="2" y="2.5" width="4.5" height="7" rx="1.2" />
+              <rect x="8" y="2.5" width="6" height="4.5" rx="1.2" opacity=".55" />
+              <rect x="2" y="11" width="4.5" height="2.5" rx="1" opacity=".55" />
+              <rect x="8" y="8.5" width="6" height="5" rx="1.2" opacity=".3" />
+            </svg>
+          </Link>
+          <span className="text-sm font-semibold tracking-tight text-mist-300">
+            Retro Board
+          </span>
+          <ThemeToggle className="ml-auto" />
+        </div>
 
-      <h1 className="mt-10 text-3xl font-semibold leading-[1.12] tracking-tight text-mist-100 sm:text-5xl">
-        How to run a retrospective
-      </h1>
-      <p className="mt-4 text-[15px] leading-relaxed text-mist-500">
-        A retrospective is an hour the team spends deciding what to change. Most
-        of them fail in the same few ways, and all of those are avoidable. Here
-        is the shape that works, what each part is for, and the mistakes worth
-        knowing about before you make them.
-      </p>
+        <h1 className="mt-10 text-3xl font-semibold leading-[1.12] tracking-tight text-mist-100 sm:text-5xl">
+          How to run a retrospective
+        </h1>
+        <p className="mt-4 text-[15px] leading-relaxed text-mist-500">
+          A retrospective is an hour the team spends deciding what to change. Most
+          of them fail in the same few ways, and all of those are avoidable. Here
+          is the shape that works, what each part is for, and the mistakes worth
+          knowing about before you make them.
+        </p>
 
-      <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
-        The five phases
-      </h2>
-      <ol className="mt-4 flex flex-col gap-4">
-        {PHASES.map((phase, index) => (
-          <li key={phase.title} className="surface rounded-2xl p-4 sm:p-5">
-            <div className="flex items-baseline gap-3">
-              <span className="font-mono text-[11px] text-mist-700">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <h3 className="text-[15px] font-semibold text-mist-100">{phase.title}</h3>
-              <span className="ml-auto shrink-0 text-[11px] tabular-nums text-mist-700">
-                {phase.time}
-              </span>
+        <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
+          The five phases
+        </h2>
+        <ol className="mt-4 flex flex-col gap-4">
+          {PHASES.map((phase, index) => (
+            <li key={phase.title} className="surface rounded-2xl p-4 sm:p-5">
+              <div className="flex items-baseline gap-3">
+                <span className="font-mono text-[11px] text-mist-700">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="text-[15px] font-semibold text-mist-100">{phase.title}</h3>
+                <span className="ml-auto shrink-0 text-[11px] tabular-nums text-mist-700">
+                  {phase.time}
+                </span>
+              </div>
+              <p className="mt-2 text-[14px] leading-relaxed text-mist-300">{phase.body}</p>
+            </li>
+          ))}
+        </ol>
+
+        <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
+          Which format should you use?
+        </h2>
+        <p className="mt-3 text-[14px] leading-relaxed text-mist-300">
+          The format decides what the team notices. Rotate it when the same cards
+          keep appearing.
+        </p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {Object.entries(TEMPLATES).map(([id, template]) => {
+            const guide = guideByTemplateId(id);
+            const body = (
+              <>
+                <h3 className="text-[14px] font-semibold text-mist-100">{template.name}</h3>
+                <p className="mt-1 text-[13px] leading-relaxed text-mist-500">
+                  {template.blurb}
+                </p>
+                <p className="mt-2 text-[11px] text-mist-700">
+                  {template.columns.map((column) => column.title).join(" · ")}
+                </p>
+              </>
+            );
+            // Every format has a guide today, but the board templates are the
+            // source of truth for what exists, so an unwritten one still renders.
+            return guide ? (
+              <Link
+                key={id}
+                href={`/templates/${guide.slug}`}
+                className="surface rounded-2xl p-4 transition-colors hover:border-line-strong"
+              >
+                {body}
+                <p className="mt-2 text-[12px] font-medium text-accent-soft">
+                  How to run it →
+                </p>
+              </Link>
+            ) : (
+              <div key={id} className="surface rounded-2xl p-4">
+                {body}
+              </div>
+            );
+          })}
+        </div>
+        <p className="mt-4 text-[13px] text-mist-500">
+          Side by side, with what each one surfaces:{" "}
+          <Link href="/templates" className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent">
+            all retrospective templates
+          </Link>
+          . None of them fit?{" "}
+          <Link href="/new" className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent">
+            Build a custom board
+          </Link>{" "}
+          with your own columns.
+        </p>
+
+        <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
+          Five ways retros quietly fail
+        </h2>
+        <div className="mt-4 flex flex-col gap-3">
+          {MISTAKES.map((mistake) => (
+            <div key={mistake.title} className="surface rounded-2xl p-4">
+              <h3 className="text-[14px] font-semibold text-mist-100">{mistake.title}</h3>
+              <p className="mt-1.5 text-[13px] leading-relaxed text-mist-300">
+                {mistake.body}
+              </p>
             </div>
-            <p className="mt-2 text-[14px] leading-relaxed text-mist-300">{phase.body}</p>
-          </li>
-        ))}
-      </ol>
+          ))}
+        </div>
 
-      <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
-        Which format should you use?
-      </h2>
-      <p className="mt-3 text-[14px] leading-relaxed text-mist-300">
-        The format decides what the team notices. Rotate it when the same cards
-        keep appearing.
-      </p>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {Object.entries(TEMPLATES).map(([id, template]) => (
-          <div key={id} className="surface rounded-2xl p-4">
-            <h3 className="text-[14px] font-semibold text-mist-100">{template.name}</h3>
-            <p className="mt-1 text-[13px] leading-relaxed text-mist-500">
-              {template.blurb}
-            </p>
-            <p className="mt-2 text-[11px] text-mist-700">
-              {template.columns.map((column) => column.title).join(" · ")}
-            </p>
-          </div>
-        ))}
-      </div>
-      <p className="mt-4 text-[13px] text-mist-500">
-        None of them fit?{" "}
-        <Link href="/new" className="text-accent-soft underline decoration-accent/40 underline-offset-2 hover:decoration-accent">
-          Build a custom board
-        </Link>{" "}
-        with your own columns.
-      </p>
+        <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
+          Common questions
+        </h2>
+        <div className="mt-4 flex flex-col gap-3">
+          {FAQ.map((item) => (
+            <details key={item.q} className="surface group rounded-2xl p-4">
+              <summary className="cursor-pointer list-none text-[14px] font-semibold text-mist-100 marker:content-none">
+                <span className="mr-2 inline-block text-mist-700 transition-transform group-open:rotate-90">
+                  ›
+                </span>
+                {item.q}
+              </summary>
+              <p className="mt-2 pl-5 text-[13px] leading-relaxed text-mist-300">{item.a}</p>
+            </details>
+          ))}
+        </div>
 
-      <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
-        Five ways retros quietly fail
-      </h2>
-      <div className="mt-4 flex flex-col gap-3">
-        {MISTAKES.map((mistake) => (
-          <div key={mistake.title} className="surface rounded-2xl p-4">
-            <h3 className="text-[14px] font-semibold text-mist-100">{mistake.title}</h3>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-mist-300">
-              {mistake.body}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
-        Common questions
-      </h2>
-      <div className="mt-4 flex flex-col gap-3">
-        {FAQ.map((item) => (
-          <details key={item.q} className="surface group rounded-2xl p-4">
-            <summary className="cursor-pointer list-none text-[14px] font-semibold text-mist-100 marker:content-none">
-              <span className="mr-2 inline-block text-mist-700 transition-transform group-open:rotate-90">
-                ›
-              </span>
-              {item.q}
-            </summary>
-            <p className="mt-2 pl-5 text-[13px] leading-relaxed text-mist-300">{item.a}</p>
-          </details>
-        ))}
-      </div>
-
-      <div className="surface mt-12 rounded-2xl p-5 text-center">
-        <p className="text-[15px] font-semibold text-mist-100">
-          Ready to run one?
-        </p>
-        <p className="mt-1.5 text-[13px] text-mist-500">
-          Create a board, share the link. No sign-up, no setup.
-        </p>
-        <Link
-          href="/"
-          className="mt-4 inline-flex h-11 items-center rounded-lg bg-accent px-6 text-sm font-medium text-white transition-colors hover:bg-accent-soft"
-        >
-          Start a retro →
-        </Link>
-      </div>
-    </main>
+        <div className="surface mt-12 rounded-2xl p-5 text-center">
+          <p className="text-[15px] font-semibold text-mist-100">
+            Ready to run one?
+          </p>
+          <p className="mt-1.5 text-[13px] text-mist-500">
+            Create a board, share the link. No sign-up, no setup.
+          </p>
+          <Link
+            href="/"
+            className="mt-4 inline-flex h-11 items-center rounded-lg bg-accent px-6 text-sm font-medium text-white transition-colors hover:bg-accent-soft"
+          >
+            Start a retro →
+          </Link>
+        </div>
+      </main>
+      <SiteFooter width="3xl" />
+    </>
   );
 }

@@ -46,7 +46,7 @@ Free. There is no paid tier, no trial, and no account.
 ## Pages
 
 - [Home](${base}/): create a board from a ready-made format.
-- [Retrospective templates](${base}/templates): the four formats compared.
+- [Retrospective templates](${base}/templates): every format compared.
 ${TEMPLATE_GUIDES.map(
   (guide) =>
     `- [${guide.name}](${base}/templates/${guide.slug}): ${guide.description.split(".")[0]}.`,
