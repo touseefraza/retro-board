@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { TEMPLATE_GUIDES } from "@/lib/templateContent";
+import { cx } from "./ui";
 
 const LINK =
-  "text-[13px] text-mist-500 transition-colors hover:text-mist-100";
+  "text-[13px] text-mist-500 underline decoration-transparent underline-offset-4 transition-colors hover:text-accent-soft hover:decoration-accent/50";
 const HEADING =
   "text-[11px] font-semibold uppercase tracking-[0.14em] text-mist-700";
 
@@ -27,10 +28,17 @@ const PAGES = [
  * names itself to a screen reader, and two more h2s on every page would say
  * "Formats" in an outline that is meant to describe the article.
  */
-export function SiteFooter() {
+export function SiteFooter({ width = "5xl" }: { width?: "3xl" | "5xl" }) {
   return (
-    <footer className="mt-auto border-t border-line">
-      <div className="mx-auto w-full max-w-5xl px-4 py-12 sm:px-6">
+    <footer className="mt-auto border-t border-line-strong bg-fill-1">
+      <div
+        className={cx(
+          "mx-auto w-full px-4 py-12 sm:px-6",
+          // Matched to the page's own column, or the footer hangs wider than
+          // the content above it and nothing lines up down the left edge.
+          width === "3xl" ? "max-w-3xl" : "max-w-5xl",
+        )}
+      >
         <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between sm:gap-12">
           <div className="max-w-[17rem]">
             <div className="flex items-center gap-2.5">

@@ -333,7 +333,7 @@ export default async function TemplatePage(props: PageProps<"/templates/[slug]">
           </p>
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter width="3xl" />
     </>
   );
 }

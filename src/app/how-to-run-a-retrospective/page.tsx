@@ -282,7 +282,7 @@ export default function GuidePage() {
           </Link>
         </div>
       </main>
-      <SiteFooter />
+      <SiteFooter width="3xl" />
     </>
   );
 }

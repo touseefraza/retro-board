@@ -86,7 +86,7 @@ export default function TemplatesIndex() {
           </Link>
         </p>
       </main>
-      <SiteFooter />
+      <SiteFooter width="3xl" />
     </>
   );
 }
