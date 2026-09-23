@@ -21,16 +21,27 @@ if (!key) {
   process.exit(1);
 }
 
-const urlList = [
-  `${base}/`,
-  `${base}/templates`,
-  `${base}/templates/start-stop-continue`,
-  `${base}/templates/mad-sad-glad`,
-  `${base}/templates/four-ls`,
-  `${base}/templates/sailboat`,
-  `${base}/how-to-run-a-retrospective`,
-  `${base}/new`,
-];
+/**
+ * Taken from the deployed sitemap rather than listed here.
+ *
+ * The sitemap is generated from the same data the pages are, so it cannot
+ * fall behind the way a hand-written list does: this one was still naming
+ * four formats a release after there were five, and the missing page was the
+ * new one, which is the only page that really needed submitting.
+ */
+const sitemap = await fetch(`${base}/sitemap.xml`);
+if (!sitemap.ok) {
+  console.error(`Could not read ${base}/sitemap.xml: ${sitemap.status}`);
+  process.exit(1);
+}
+const urlList = [...(await sitemap.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+  (match) => match[1],
+);
+
+if (urlList.length === 0) {
+  console.error("Sitemap parsed to zero URLs, refusing to submit.");
+  process.exit(1);
+}
 
 const response = await fetch("https://api.indexnow.org/indexnow", {
   method: "POST",
