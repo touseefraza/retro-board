@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function TemplatesIndex() {
   return (
     <>
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 pt-8 pb-20 sm:px-6 sm:pt-12 sm:pb-24">
+      <main className="mx-auto w-full max-w-3xl flex-1 px-4 pt-8 pb-12 sm:px-6 sm:pt-12 sm:pb-16">
         <SiteHeader />
 
         <h1 className="mt-10 text-3xl font-semibold leading-[1.12] tracking-tight text-mist-100 sm:text-5xl">
