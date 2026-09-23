@@ -2,13 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TEMPLATES } from "@/lib/types";
-import { siteUrl } from "@/lib/site";
+import { openGraphFor, siteUrl } from "@/lib/site";
+
+const GUIDE_DESCRIPTION =
+  "A practical guide to running a sprint retrospective: the five phases, how long each takes, which format to pick, and the facilitation mistakes that quietly kill retros. With free templates you can start in one click.";
 
 export const metadata: Metadata = {
   title: "How to run a retrospective",
-  description:
-    "A practical guide to running a sprint retrospective: the five phases, how long each takes, which format to pick, and the facilitation mistakes that quietly kill retros. With free templates you can start in one click.",
+  description: GUIDE_DESCRIPTION,
   alternates: { canonical: "/how-to-run-a-retrospective" },
+  openGraph: openGraphFor({
+    title: "How to run a retrospective",
+    description: GUIDE_DESCRIPTION,
+    path: "/how-to-run-a-retrospective",
+    type: "article",
+  }),
 };
 
 const PHASES = [

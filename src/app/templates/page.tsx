@@ -3,12 +3,20 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { TONE, cx } from "@/components/ui";
 import { TEMPLATE_GUIDES } from "@/lib/templateContent";
+import { openGraphFor } from "@/lib/site";
+
+const TEMPLATES_DESCRIPTION =
+  "Free retrospective templates for agile teams: Start Stop Continue, Mad Sad Glad, the 4 Ls, and Sailboat. What each format surfaces, when to use it, and a board you can start in one click. No sign-up.";
 
 export const metadata: Metadata = {
   title: "Retrospective templates",
-  description:
-    "Free retrospective templates for agile teams: Start Stop Continue, Mad Sad Glad, the 4 Ls, and Sailboat. What each format surfaces, when to use it, and a board you can start in one click. No sign-up.",
+  description: TEMPLATES_DESCRIPTION,
   alternates: { canonical: "/templates" },
+  openGraph: openGraphFor({
+    title: "Retrospective templates",
+    description: TEMPLATES_DESCRIPTION,
+    path: "/templates",
+  }),
 };
 
 export default function TemplatesIndex() {

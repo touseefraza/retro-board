@@ -5,12 +5,20 @@ import { SetupNotice } from "@/components/SetupNotice";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { isAiConfigured } from "@/lib/ai";
 import { isDatabaseConfigured } from "@/lib/db";
+import { openGraphFor } from "@/lib/site";
+
+const NEW_DESCRIPTION =
+  "Build a retro board your way: choose how many columns, name each one, pick its colour, rename the action items section, and set the vote budget. Free, no sign-up.";
 
 export const metadata: Metadata = {
   title: "Build a custom retrospective board",
-  description:
-    "Build a retro board your way: choose how many columns, name each one, pick its colour, rename the action items section, and set the vote budget. Free, no sign-up.",
+  description: NEW_DESCRIPTION,
   alternates: { canonical: "/new" },
+  openGraph: openGraphFor({
+    title: "Build a custom retrospective board",
+    description: NEW_DESCRIPTION,
+    path: "/new",
+  }),
 };
 
 export default function NewBoardPage() {

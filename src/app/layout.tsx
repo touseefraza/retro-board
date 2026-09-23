@@ -2,7 +2,13 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { isAiConfigured } from "@/lib/ai";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, siteUrl } from "@/lib/site";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TAGLINE,
+  openGraphFor,
+  siteUrl,
+} from "@/lib/site";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -34,18 +40,16 @@ export function generateMetadata(): Metadata {
       "scrum retrospective",
     ],
     alternates: { canonical: "/" },
-    openGraph: {
-      type: "website",
-      url: base,
-      siteName: SITE_NAME,
+    openGraph: openGraphFor({
       title: `${SITE_NAME} | ${SITE_TAGLINE}`,
       description,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${SITE_NAME} | ${SITE_TAGLINE}`,
-      description,
-    },
+      path: "/",
+    }),
+    // Card type only: naming a title or description here would make every
+    // child route inherit the home page's, because a child that declares no
+    // `twitter` block of its own gets this one verbatim. Left out, Next fills
+    // each card from that page's own title and description.
+    twitter: { card: "summary_large_image" },
     robots: {
       index: true,
       follow: true,

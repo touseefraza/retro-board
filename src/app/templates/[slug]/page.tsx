@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { StartTemplateButton } from "@/components/StartTemplateButton";
 import { TONE, cx } from "@/components/ui";
 import { TEMPLATE_GUIDES, guideBySlug } from "@/lib/templateContent";
-import { siteUrl } from "@/lib/site";
+import { openGraphFor, siteUrl } from "@/lib/site";
 
 export function generateStaticParams() {
   return TEMPLATE_GUIDES.map((guide) => ({ slug: guide.slug }));
@@ -22,12 +22,12 @@ export async function generateMetadata(
     title: guide.title,
     description: guide.description,
     alternates: { canonical: `/templates/${guide.slug}` },
-    openGraph: {
-      type: "article",
+    openGraph: openGraphFor({
       title: guide.title,
       description: guide.description,
-      url: `${siteUrl()}/templates/${guide.slug}`,
-    },
+      path: `/templates/${guide.slug}`,
+      type: "article",
+    }),
   };
 }
 
