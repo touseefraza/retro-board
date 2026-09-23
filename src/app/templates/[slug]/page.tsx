@@ -62,8 +62,29 @@ export default async function TemplatePage(props: PageProps<"/templates/[slug]">
     })),
   };
 
+  // The breadcrumb the page already draws, in the form a search result can use.
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Retrospective templates",
+        item: `${siteUrl()}/templates`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: `${guide.name} retrospective`,
+        item: `${siteUrl()}/templates/${guide.slug}`,
+      },
+    ],
+  };
+
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-4 pt-8 pb-20 sm:px-6 sm:pt-12 sm:pb-24">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
@@ -112,6 +133,64 @@ export default async function TemplatePage(props: PageProps<"/templates/[slug]">
       </div>
 
       <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
+        What a filled-in board looks like
+      </h2>
+      <p className="mt-4 text-[14px] leading-relaxed text-mist-500">
+        {guide.walkthrough.scenario}
+      </p>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        {guide.walkthrough.columns.map((column) => {
+          const tone = guide.columns.find((c) => c.title === column.title)?.tone;
+          return (
+            <div key={column.title} className="surface rounded-2xl p-4">
+              <div className="flex items-center gap-2.5">
+                {tone && <span className={cx("h-2 w-2 rounded-full", TONE[tone].dot)} />}
+                <h3 className="text-[14px] font-semibold text-mist-100">{column.title}</h3>
+              </div>
+              <div className="mt-3 flex flex-col gap-2">
+                {column.cards.map((card) => (
+                  <p
+                    key={card}
+                    className="rounded-lg border border-line bg-fill-1 px-3 py-2 text-[12.5px] leading-relaxed text-mist-300"
+                  >
+                    {card}
+                  </p>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <div className="surface rounded-2xl p-4">
+          <h3 className="text-[13px] font-semibold uppercase tracking-[0.1em] text-mist-500">
+            What grouping surfaced
+          </h3>
+          <ul className="mt-3 flex flex-col gap-2">
+            {guide.walkthrough.themes.map((theme) => (
+              <li key={theme} className="flex gap-2.5 text-[13px] leading-relaxed text-mist-300">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-tone-neutral" />
+                {theme}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="surface rounded-2xl p-4">
+          <h3 className="text-[13px] font-semibold uppercase tracking-[0.1em] text-mist-500">
+            What they left with
+          </h3>
+          <ul className="mt-3 flex flex-col gap-2">
+            {guide.walkthrough.actions.map((action) => (
+              <li key={action} className="flex gap-2.5 text-[13px] leading-relaxed text-mist-300">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-tone-positive" />
+                {action}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
         When to use it
       </h2>
       <ul className="mt-4 flex flex-col gap-2">
@@ -152,6 +231,40 @@ export default async function TemplatePage(props: PageProps<"/templates/[slug]">
             {tip}
           </p>
         ))}
+      </div>
+
+      <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
+        Variations
+      </h2>
+      <div className="mt-4 flex flex-col gap-3">
+        {guide.variations.map((variation) => (
+          <div key={variation.name} className="surface rounded-2xl p-4 sm:p-5">
+            <h3 className="text-[15px] font-semibold text-mist-100">{variation.name}</h3>
+            <p className="mt-2 text-[14px] leading-relaxed text-mist-300">{variation.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">
+        Reach for a different format when
+      </h2>
+      <div className="mt-4 flex flex-col gap-2">
+        {guide.insteadOf.map((alternative) => {
+          const other = guideBySlug(alternative.slug);
+          if (!other) return null;
+          return (
+            <Link
+              key={alternative.slug}
+              href={`/templates/${alternative.slug}`}
+              className="surface rounded-2xl p-4 transition-colors hover:border-line-strong"
+            >
+              <p className="text-[14px] leading-relaxed text-mist-300">{alternative.when}</p>
+              <p className="mt-2 text-[13px] font-medium text-accent-soft">
+                {other.name} retrospective →
+              </p>
+            </Link>
+          );
+        })}
       </div>
 
       <h2 className="mt-12 text-xl font-semibold tracking-tight text-mist-100">

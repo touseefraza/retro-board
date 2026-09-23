@@ -18,6 +18,25 @@ export type TemplateColumnGuide = {
   example: string;
 };
 
+/**
+ * One board, filled in, for a team that doesn't exist.
+ *
+ * The question behind most searches for a format's name is "what does a real
+ * one look like", and a single example card per column doesn't answer it. The
+ * cards here belong to one scenario, so the themes and actions underneath
+ * follow from them rather than being asserted.
+ */
+export type TemplateWalkthrough = {
+  /** The team and the moment this board belongs to. */
+  scenario: string;
+  /** Cards per column, titled to match `columns`. */
+  columns: { title: string; cards: string[] }[];
+  /** What grouping the cards actually surfaced. */
+  themes: string[];
+  /** What the team left the room with. */
+  actions: string[];
+};
+
 export type TemplateGuide = {
   slug: string;
   templateId: TemplateId;
@@ -33,6 +52,11 @@ export type TemplateGuide = {
   running: { time: string; step: string }[];
   tips: string[];
   faq: { q: string; a: string }[];
+  walkthrough: TemplateWalkthrough;
+  /** Named reshapings of the format, including the ones people search for. */
+  variations: { name: string; body: string }[];
+  /** When to reach for a different format, pointing at the guide for it. */
+  insteadOf: { slug: string; when: string }[];
 };
 
 export const TEMPLATE_GUIDES: TemplateGuide[] = [
@@ -90,6 +114,68 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       "Continue is not a participation trophy. A team that stops naming what works loses those practices to the next reorganisation.",
       "Cap Start at two actions per sprint. A team that agrees to start six things starts none of them.",
     ],
+    walkthrough: {
+      scenario:
+        "A five person team two sprints into replacing a payments integration, running 45 minutes on a Thursday.",
+      columns: [
+        {
+          title: "Start",
+          cards: [
+            "Start pairing on anything that touches the migration",
+            "Start writing the rollback step before the deploy step, not after it",
+            "Start asking at standup what is blocked rather than what is done",
+          ],
+        },
+        {
+          title: "Stop",
+          cards: [
+            "Stop taking bug reports directly in DMs",
+            "Stop carrying the same two tickets across three sprints without saying why",
+            "Stop deploying on Friday afternoon and then watching it all weekend",
+          ],
+        },
+        {
+          title: "Continue",
+          cards: [
+            "Continue the Friday demo, which caught two regressions",
+            "Continue the shared on-call notes doc",
+            "Continue having support review the release notes before they go out",
+          ],
+        },
+      ],
+      themes: [
+        "Three cards across Start and Stop were one card: work arriving through channels nobody else can see.",
+        "The deploy cards and the Friday demo card were all about catching problems before a release rather than after it.",
+      ],
+      actions: [
+        "Priya opens a bug channel and the team stops answering bug DMs, by Friday.",
+        "Sam adds the rollback step to the deploy checklist template before the next release.",
+      ],
+    },
+    variations: [
+      {
+        name: "Good / Bad / Start / Stop",
+        body: "Splits the three columns into four: Good and Bad collect what happened, Start and Stop collect what to do about it. Worth using when people keep writing observations into Start, because it gives those cards somewhere to go. The cost is that the retro needs a grouping step between the two halves, so add ten minutes.",
+      },
+      {
+        name: "More of / Less of / Keep",
+        body: "The same three questions with the edges filed off. Useful for a team that reads Stop as an accusation, or a first retro where nobody yet knows how blunt they are allowed to be. It surfaces less, so move back to Stop once the room can take it.",
+      },
+      {
+        name: "Drop / Add / Keep / Improve",
+        body: "DAKI adds a fourth column for practices that are nearly right. It stops a team throwing out something that only needs adjusting, which is the most common way Start / Stop / Continue loses a good habit.",
+      },
+    ],
+    insteadOf: [
+      {
+        slug: "mad-sad-glad",
+        when: "The sprint was hard and the team needs to say so before it can talk about process.",
+      },
+      {
+        slug: "sailboat",
+        when: "The goal itself is contested, or there is a risk ahead that nobody has raised.",
+      },
+    ],
     faq: [
       {
         q: "What is the Start Stop Continue retrospective?",
@@ -102,6 +188,18 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       {
         q: "What's the difference between Stop and Start?",
         a: "Stop is about removing something the team already does. Start is about adding something it doesn't. Teams over-fill Start because adding feels productive, but removing usually frees more time.",
+      },
+      {
+        q: "Is Good Bad Start Stop the same as Start Stop Continue?",
+        a: "Not quite. Good / Bad / Start / Stop splits the exercise in two: Good and Bad collect what happened, Start and Stop collect what to do next. Start / Stop / Continue asks for decisions directly and has a column for protecting what already works, which the four column version drops. Use the four column form if people keep writing observations where actions should go.",
+      },
+      {
+        q: "How many cards should each person write?",
+        a: "Three to five in total is normal, not three to five per column. A team that writes twenty cards each spends the whole retro reading and never reaches actions.",
+      },
+      {
+        q: "Can you use Start Stop Continue for an individual?",
+        a: "Yes, and it is one of the better formats for a one to one or a personal review, because all three questions are about behaviour rather than outcome. Write it yourself first, then compare with the other person's version of the same three columns.",
       },
     ],
   },
@@ -159,6 +257,68 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       "Mad cards are about situations, not people. If a name appears on a card, redirect to the system that made it possible.",
       "Glad is not filler. It tells you which practices are load-bearing for morale.",
     ],
+    walkthrough: {
+      scenario:
+        "A six person team in the sprint after a two day outage, running an hour with the engineering manager out of the room.",
+      columns: [
+        {
+          title: "Mad",
+          cards: [
+            "Mad that the staging environment was down for three days",
+            "Mad that we heard about the config change from the incident, not the PR",
+            "Mad that one alert paged three people and none of them owned it",
+          ],
+        },
+        {
+          title: "Sad",
+          cards: [
+            "Sad we cut the accessibility work again",
+            "Sad that whoever fixed it spent their weekend on it",
+            "Sad that the postmortem actions from March are still open",
+          ],
+        },
+        {
+          title: "Glad",
+          cards: [
+            "Glad the on-call handover actually worked this time",
+            "Glad two people volunteered before anyone was asked",
+            "Glad the status page updates went out without anyone chasing",
+          ],
+        },
+      ],
+      themes: [
+        "Two Mad cards and one Sad card were the same thing: changes landing without anyone downstream knowing.",
+        "The Glad column was mostly people covering for each other, which is worth naming and also a sign the system is running on goodwill.",
+      ],
+      actions: [
+        "Ana makes a platform reviewer required on any config change to shared infrastructure.",
+        "Tom reopens the March postmortem actions at the next retro, with a yes or no on each.",
+      ],
+    },
+    variations: [
+      {
+        name: "Mad / Sad / Glad / Afraid",
+        body: "Adds a column for what people are worried about rather than what already happened. It catches the thing a team knows is coming and has not said out loud, and it gives an anxious room somewhere to put that feeling other than Mad.",
+      },
+      {
+        name: "Glad first",
+        body: "Run the columns in reverse, starting with Glad. Writing something good first makes the hard column easier to fill, which matters most with a team doing this format for the first time.",
+      },
+      {
+        name: "Happy / Meh / Sad",
+        body: "A lighter labelling for teams that find Mad too strong, or in cultures where naming anger at work is a bigger step than the format intends. The middle column collects the things that were merely disappointing, which is where most of the useful material sits anyway.",
+      },
+    ],
+    insteadOf: [
+      {
+        slug: "start-stop-continue",
+        when: "The team is already talking freely and what it needs now is concrete process change.",
+      },
+      {
+        slug: "four-ls",
+        when: "The period under review is a whole release, and what the team learned matters as much as how it felt.",
+      },
+    ],
     faq: [
       {
         q: "What is a Mad Sad Glad retrospective?",
@@ -171,6 +331,18 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       {
         q: "How do you turn feelings into actions?",
         a: "Look for the cause under the card. Four Mad cards about waiting is one action about handoffs. The feeling identifies where to look; the action addresses the system that produced it.",
+      },
+      {
+        q: "Can you run Mad Sad Glad anonymously?",
+        a: "You can, and it is a reasonable choice for a team that is not safe yet. The cost is that you cannot follow up on a card nobody will claim. Keeping cards hidden until everyone has written gets most of the benefit and leaves the author able to explain what they meant.",
+      },
+      {
+        q: "What if everybody only writes Glad cards?",
+        a: "That is information, not a failed retro. Either the sprint genuinely went well, or the room does not believe the Mad column is safe. Ask directly which one it is. If it is the second, switch to a process format and come back to this one later.",
+      },
+      {
+        q: "How long does a Mad Sad Glad retro take?",
+        a: "About an hour, and it does not compress well. The read-out is the part that matters and it needs time, because an emotional card that gets solved in ten seconds usually was not understood.",
       },
     ],
   },
@@ -235,6 +407,76 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       "Lacked usually converts to actions more cleanly than a 'what went wrong' column, because an absence names its own fix.",
       "Longed for is not wasted time even when nothing is actionable. It tells a manager what the team can't fix alone.",
     ],
+    walkthrough: {
+      scenario:
+        "An eight person team the week after shipping a six month billing migration, running 90 minutes.",
+      columns: [
+        {
+          title: "Liked",
+          cards: [
+            "Liked how early we got a working prototype in front of users",
+            "Liked that we froze scope at the halfway point and held it",
+            "Liked having one person own the cutover plan end to end",
+          ],
+        },
+        {
+          title: "Learned",
+          cards: [
+            "Learned the rate limit is per-account, not per-key",
+            "Learned the legacy proration logic has three special cases nobody had written down",
+            "Learned finance needed two weeks of parallel running, not the two days we planned",
+          ],
+        },
+        {
+          title: "Lacked",
+          cards: [
+            "Lacked a staging database with realistic data volume",
+            "Lacked any way to test a month-end close without waiting for month end",
+            "Lacked a named contact in finance for the first two months",
+          ],
+        },
+        {
+          title: "Longed for",
+          cards: [
+            "Longed for a decision on the API version before we built on it",
+            "Longed for the scope freeze to apply to the teams around us too",
+            "Longed for more than one person who can read the old billing code",
+          ],
+        },
+      ],
+      themes: [
+        "Three Learned cards were things a document could have told the team, which makes them a documentation gap rather than knowledge gained.",
+        "Lacked and Longed for were pointing at one problem: the team could not rehearse the risky part before doing it for real.",
+      ],
+      actions: [
+        "Dev writes the proration special cases and the parallel-running requirement into the billing runbook this week.",
+        "Maya asks for a month-end simulation environment in the next platform planning round, using the migration as the argument.",
+      ],
+    },
+    variations: [
+      {
+        name: "Learned first",
+        body: "Open with Learned instead of Liked when the point of the session is knowledge transfer rather than process. It puts the most perishable column first, while people still remember the detail, and it sets the tone that this is a handover rather than a scoring exercise.",
+      },
+      {
+        name: "As an onboarding review",
+        body: "Run the four Ls with one person about their first ninety days. Lacked and Longed for turn into the clearest onboarding backlog you will get, because a new joiner is the only person who can still see what is missing.",
+      },
+      {
+        name: "Split across two sessions",
+        body: "For a project long enough that one sitting cannot cover it, take Liked and Learned in the first session and Lacked and Longed for in the second. The gap lets people remember things, and the second session starts with the knowledge already written down.",
+      },
+    ],
+    insteadOf: [
+      {
+        slug: "start-stop-continue",
+        when: "It is a routine two-week sprint, where asking what the team learned produces filler.",
+      },
+      {
+        slug: "sailboat",
+        when: "The next milestone matters more than the last one and the risks are still ahead.",
+      },
+    ],
     faq: [
       {
         q: "What are the 4 Ls in a retrospective?",
@@ -247,6 +489,18 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       {
         q: "What's the difference between Lacked and Longed for?",
         a: "Lacked is something the team needed and could plausibly have had: a tool, data, access. Longed for is a wish that's usually outside the team's control, which makes it a signal to escalate rather than an action.",
+      },
+      {
+        q: "Who invented the 4 Ls retrospective?",
+        a: "It is attributed to Mary Gorman and Ellen Gottesdiener, who designed it for reflection across a release or a project rather than a two week iteration. That origin is why it reads as too broad when a team tries to run it every sprint.",
+      },
+      {
+        q: "Is there a 5 Ls retrospective?",
+        a: "Some teams add a fifth column, usually Loathed or Loved, to give strong feeling somewhere to go. It works, but if that column is the one filling up then the team is asking an emotional question, and Mad / Sad / Glad asks it better.",
+      },
+      {
+        q: "Where should the Learned cards go afterwards?",
+        a: "Somewhere that outlives the board, on the day of the retro. A runbook, an onboarding doc, an architecture note. Learned is the column teams skip copying out and regret, because the knowledge was only ever in the room.",
       },
     ],
   },
@@ -311,6 +565,75 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       "Rocks need an owner and a date, not a discussion. A risk everyone acknowledges and nobody owns is still a risk.",
       "Anchors are present tense, rocks are future tense. Keeping that line clean stops the two columns collapsing into one.",
     ],
+    walkthrough: {
+      scenario:
+        "A seven person team at the start of a quarter, planning self-serve onboarding, running 50 minutes.",
+      columns: [
+        {
+          title: "Wind",
+          cards: [
+            "Wind: the new CI pipeline cut review turnaround in half",
+            "Wind: design has the flows ready two weeks ahead of us",
+            "Wind: we did the auth work last quarter and it has held",
+          ],
+        },
+        {
+          title: "Anchors",
+          cards: [
+            "Anchors: three separate approval steps before a release",
+            "Anchors: the signup form still lives in the marketing site repo",
+            "Anchors: nobody reviews PRs in the first week of a sprint",
+          ],
+        },
+        {
+          title: "Rocks",
+          cards: [
+            "Rocks: only one person can deploy the payments service",
+            "Rocks: the trial logic assumes a sales-assisted signup and nobody has checked what self-serve does to it",
+            "Rocks: the identity provider contract is up for renewal in March",
+          ],
+        },
+        {
+          title: "Island",
+          cards: [
+            "Island: ship self-serve onboarding by the end of the quarter",
+            "Island: a new customer reaches a working account without talking to anyone",
+          ],
+        },
+      ],
+      themes: [
+        "The island took ten minutes, because two people thought self-serve meant no sales contact at all and two thought it meant sales later. That was the most valuable ten minutes of the session.",
+        "Two rocks were the same rock: things that only work because one particular person knows about them.",
+      ],
+      actions: [
+        "Jo runs a deploy of the payments service with somebody else driving, before the end of the month.",
+        "Kit checks what the trial logic does on a self-serve signup and reports back at the next planning session.",
+      ],
+    },
+    variations: [
+      {
+        name: "Speed Boat",
+        body: "The original game this format came from: the boat and the anchors, nothing else. Half an hour, one question, and a ranked list of what is slowing the team down. Reach for it when the goal is not in question and you only want the drag.",
+      },
+      {
+        name: "Add a sun and a storm",
+        body: "The sun is what the team is optimistic about, the storm is the weather it cannot control: a reorganisation, a hiring freeze, a market shift. Separating the storm from the anchors stops the team writing actions against things no action will reach.",
+      },
+      {
+        name: "Run it as a pre-mortem",
+        body: "Island and rocks only, before the work starts rather than after. Ask the team to imagine the quarter has failed and to write why. It gets the same risks onto the board as the full format and takes twenty minutes.",
+      },
+    ],
+    insteadOf: [
+      {
+        slug: "start-stop-continue",
+        when: "The goal has not changed and what you want is a short retro that produces process actions.",
+      },
+      {
+        slug: "mad-sad-glad",
+        when: "Something went badly wrong and the team needs to talk about it before it can plan forward.",
+      },
+    ],
     faq: [
       {
         q: "What is a sailboat retrospective?",
@@ -323,6 +646,18 @@ export const TEMPLATE_GUIDES: TemplateGuide[] = [
       {
         q: "When should you run a sailboat retrospective?",
         a: "At the start of a quarter or project, or any time the team needs to talk about goals and risk together. It's less useful for a routine sprint where the goal hasn't changed.",
+      },
+      {
+        q: "Is a sailboat retrospective the same as a speedboat retrospective?",
+        a: "Speed Boat is the original and narrower exercise: the boat and the anchors, asking only what slows the team down. The sailboat adds the island, the wind and the rocks, which turns an obstacle game into a full retrospective that also looks forward.",
+      },
+      {
+        q: "Do you need to draw the boat?",
+        a: "No. The drawing helps a room that engages better with a picture than a table, but the format works as four columns. What actually matters is filling the island first, because every other column is written relative to it.",
+      },
+      {
+        q: "How long does a sailboat retrospective take?",
+        a: "About 45 minutes, of which the first five go on the island. Budget more if the team has never agreed the goal out loud, because that conversation is the one worth having and it will not fit in five minutes.",
       },
     ],
   },
